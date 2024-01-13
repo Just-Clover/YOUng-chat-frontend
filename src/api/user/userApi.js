@@ -16,3 +16,7 @@ export const codeCheck = (email, code) => {
     code: code
   });
 }
+
+export const login = (userData) => {
+  return noAuthInstance.post("/users/login", userData);
+}
