@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,11 +11,16 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {codeCheck, mailSend, signup} from "../api/user/userApi.js";
-import {useState} from "react";
-import {Dialog, DialogContent,  DialogTitle} from "@mui/material";
+import {Dialog, DialogContent, DialogTitle} from "@mui/material";
+import {useNavigate} from "react-router-dom";
+import Footer from "../component/Footer.jsx";
 
-const SignUp = () => {
-  // const navigate = useNavigate();
+const Signup = () => {
+  const navigate = useNavigate();
+
+  const locationLogin = () => {
+    navigate('/login');
+  }
 
   const [user, setUser] = useState({
     username: '',
@@ -22,8 +28,8 @@ const SignUp = () => {
     password: '',
     code: ''
   });
-  const [open, setOpen] = React.useState(false);
-  const [disabled, setDisabled] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
   const handleInputChange = (event) => {
@@ -40,9 +46,9 @@ const SignUp = () => {
       .then((response) => {
         console.log(user.code);
         setDisabled(true);
-        console.log(response+"성공");
+        console.log(response + "성공");
       }).catch((error) => {
-        console.log(error+"실패");
+        console.log(error + "실패");
         console.log(error.data);
       });
   }
@@ -66,10 +72,11 @@ const SignUp = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await signup(user).then((response) => {
-      console.log(response);
+      alert("회원가입을 축하드립니다!");
+      navigate("/login");
     }).catch((error) => {
-      for (let i = 0; i < error.data.data.length; i++) {
-        alert(error.data.data[i].message);
+      for (let i = 0; i < error.response.data.data.length; i++) {
+        alert(error.response.data.data[i].message);
       }
     });
   };
@@ -184,24 +191,15 @@ const SignUp = () => {
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
-            <Link herf="" variant="body2">
-              Already have an account? Login
+            <Link onClick={locationLogin} variant="body2">
+              이미 가입하신 아이디가 존재하나요? 로그인
             </Link>
-            <Grid item>
-            </Grid>
           </Grid>
         </Box>
       </Box>
-      <Typography sx={{mt: 5}} color="text.secondary" align="center">
-        {'Corp © '}
-        <Link color="inherit" href="https://mui.com/">
-          Just Clover
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
+      <Footer/>
     </Container>
   );
 }
 
-export default SignUp;
+export default Signup;
