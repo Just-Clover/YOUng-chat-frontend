@@ -1,4 +1,4 @@
-import {noAuthInstance} from "../index";
+import {noAuthInstance, user} from "../index";
 
 export const signup = (userData) => {
   return noAuthInstance.post("/users/signup", userData);
@@ -19,4 +19,8 @@ export const codeCheck = (email, code) => {
 
 export const login = (userData) => {
   return noAuthInstance.post("/users/login", userData);
+}
+
+export const getProfile = (userId) => {
+  return user.get("/profile", {userId: userId});
 }
