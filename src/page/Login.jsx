@@ -11,8 +11,8 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Footer from "../component/Footer.jsx";
 import {login} from "../api/user/userApi.js";
-import {useNavigate} from "react-router-dom";
 import {setAccessToken, setRefreshToken} from "../api/common/cookie.js";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -36,7 +36,7 @@ const Login = () => {
         event.preventDefault();
         await login(user).then((response) => {
             alert("로그인에 성공하였습니다!");
-            const accessToken = response.headers.get("AccessToken")
+            const accessToken = response.headers.get("AccessToken");
             const refreshToken = response.headers.get("RefreshToken");
             setAccessToken(accessToken);
             setRefreshToken(refreshToken);

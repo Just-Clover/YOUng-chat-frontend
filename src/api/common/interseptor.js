@@ -1,8 +1,15 @@
+import {getCookie, setAccessToken} from "./cookie.js";
+
 export function setInterceptors(instance) {
   instance.interceptors.request.use(
     function (config) {
+      const accessToken = getCookie('AccessToken');
+      const refreshToken = getCookie('RefreshToken');
+
       config.headers = {
         'Content-Type': 'application/json;charset=utf-8',
+        'AccessToken': accessToken,
+        'RefreshToken': refreshToken
       };
       return config;
     },
@@ -14,7 +21,10 @@ export function setInterceptors(instance) {
 
   instance.interceptors.response.use(
     function (response) {
-
+      const accessToken = response.headers.get("AccessToken");
+      if (accessToken) {
+        setAccessToken(accessToken);
+      }
       return response;
     },
     async function (error) {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -6,8 +7,15 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import {getProfile} from "../api/user/userApi.js";
 
 const Body = () => {
+  useEffect(() => {
+    getProfile().then((response) => {
+      console.log(response);
+    });
+  },[]);
+
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <ListItem alignItems="flex-start">
