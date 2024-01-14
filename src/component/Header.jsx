@@ -5,50 +5,38 @@ import Container from '@mui/material/Container';
 import MessageIcon from '@mui/icons-material/Message';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import Box from "@mui/material/Box";
 
 const Header = () => {
-    return (
-        <AppBar position="static" sx={{bgcolor: '#9ccc65', mt: 3}}>
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    <MessageIcon/>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            display: {xs: 'none', md: 'flex'},
-                            ml: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            color: "#fff176",
-                            textDecoration: 'none',
-                        }}
-                    >
-                        YOU
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            display: {xs: 'none', md: 'flex'},
-                            fontFamily: 'monospace',
-                            fontWeight: 200,
-                            letterSpacing: '.1rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        ngChat
-                    </Typography>
-                    <PersonAddAltIcon fontSize="large"/>
-                    <PersonSearchIcon fontSize="large"/>
-                </Toolbar>
-            </Container>
-        </AppBar>
-    );
+  return (
+    <AppBar position="static" sx={{bgcolor: '#9ccc65', mt: 3}}>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters sx={{justifyContent: 'space-between'}}>
+          <Box sx={{display: 'flex', alignItems: 'center'}}>
+            <MessageIcon sx={{mr: 2}}/>
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                fontWeight: 'bold',
+                color: "#ffffff",
+                textDecoration: 'none',
+                display: {xs: 'none', md: 'flex'}
+              }}
+            >
+              <span style={{color: "#fff176"}}>YOU</span>
+              ngChat
+            </Typography>
+          </Box>
+          <Box sx={{display: 'flex', alignItems: 'center'}}>
+            <PersonAddAltIcon fontSize="large" sx={{mr: 2}}/>
+            <PersonSearchIcon fontSize="large"/>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
 }
 export default Header;

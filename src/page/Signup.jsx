@@ -94,7 +94,7 @@ const Signup = () => {
                 <Avatar sx={{m: 2, bgcolor: '#9ccc65'}}>
                     <LockOutlinedIcon/>
                 </Avatar>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h4" sx={{fontWeight: 'bold'}}>
                     Sign up
                 </Typography>
                 <Box component="form" sx={{mt: 3}}>

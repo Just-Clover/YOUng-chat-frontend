@@ -60,8 +60,8 @@ const Login = () => {
                 <Avatar sx={{m: 2, bgcolor: '#9ccc65'}}>
                     <LoginIcon/>
                 </Avatar>
-                <Typography component="h1" variant="h5">
-                    Login
+                <Typography component="h1" variant="h4" sx={{fontWeight: 'bold'}}>
+                    YOUngChat!
                 </Typography>
                 <Box component="form" sx={{mt: 3}}>
                     <Grid container spacing={2}>
