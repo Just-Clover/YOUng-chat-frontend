@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {setInterceptors} from "./common/interseptor.js";
 
 const rootUrl = import.meta.env.VITE_API_ROOT;
 
@@ -10,15 +11,18 @@ function createInstance(url) {
     }
   });
   return instance;
-  //return interseptor
 }
 
 function createAuthInstance(url) {
   const instance = axios.create({
     baseURL: rootUrl + url,
+
   });
-  return instance;
+  return setInterceptors(instance);
 }
 
 export const noAuthInstance = createInstance('/api/v1');
 export const user = createAuthInstance('/api/v1/users');
+
+//
+export const chat = createAuthInstance('/api/v1/chat');
