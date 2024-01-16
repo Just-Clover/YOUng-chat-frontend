@@ -25,14 +25,6 @@ const EditPassword = () => {
 
     const handleSubmit = async (event) => {
         // event.preventDefault();
-        // await signup(user).then(() => {
-        //     alert("회원가입을 축하드립니다!");
-        //     navigate("/login");
-        // }).catch((error) => {
-        //     for (let i = 0; i < error.response.data.data.length; i++) {
-        //         alert(error.response.data.data[i].message);
-        //     }
-        // });
     };
 
     return (

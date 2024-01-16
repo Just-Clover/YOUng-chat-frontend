@@ -2,11 +2,6 @@ import React from 'react';
 import {Box, Paper, Typography} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 
-// const [message, setMessage] = useState({
-//     username: '',
-//     message: '',
-//     messageTime: ''
-// });
 const OtherUserMessage = ({showAvatarAndName}) => (
 
         <Box sx={{display: 'flex', alignItems: 'start', mb: 2}}>
@@ -45,6 +40,7 @@ const MyMessage = () => (
 //         </Typography>
 //     </Box>
 // );
+
 const MessageList = () => (
     // <Box sx={{padding: 2}}>
     //     {messages.map((message, index) =>
