@@ -13,9 +13,6 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import IconButton from '@mui/material/IconButton';
-import {Chat} from "./category/Chat.jsx";
-import {Friend} from "./category/Friend.jsx";
-import {MyPage} from "./category/MyPage.jsx";
 
 const drawerWidth = 240;
 
@@ -65,16 +62,15 @@ const DrawerHeader = styled('div')(({theme}) => ({
     ...theme.mixins.toolbar,
 }));
 
-// eslint-disable-next-line react/prop-types
 const Sidebar = ({setCategory, open, handleDrawerClose}) => {
     const clickItem = (item) => {
         setCategory(item.value);
     }
 
     const list = [
-        {icon: <PersonIcon/>, text: 'Friend', value: Friend},
-        {icon: <ChatBubbleIcon/>, text: 'Chat', value: Chat},
-        {icon: <AccountCircleIcon/>, text: 'MyPage', value: MyPage},
+        {icon: <PersonIcon/>, text: 'Friend', value: 'friend'},
+        {icon: <ChatBubbleIcon/>, text: 'Chat', value: 'chat'},
+        {icon: <AccountCircleIcon/>, text: 'MyPage', value: 'myPage'},
     ];
 
     return (
