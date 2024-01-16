@@ -1,6 +1,6 @@
 import {Box, Paper} from "@mui/material";
 import React from "react";
-import Profile from "./mainbody/Profile.jsx";
+import Chatroom from "./mainbody/Chatroom.jsx";
 
 const MainBody = () => {
     return (
@@ -22,8 +22,10 @@ const MainBody = () => {
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-                <Profile/>
+                {/*<Profile/>*/}
                 {/*<EditProfile/>*/}
+                {/*<EditPassword/>*/}
+                <Chatroom/>
             </Paper>
         </Box>
     )
