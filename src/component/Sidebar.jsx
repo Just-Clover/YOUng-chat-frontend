@@ -1,4 +1,3 @@
-import React from 'react';
 import {styled} from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -14,6 +13,9 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import IconButton from '@mui/material/IconButton';
+import {Chat} from "./category/Chat.jsx";
+import {Friend} from "./category/Friend.jsx";
+import {MyPage} from "./category/MyPage.jsx";
 
 const drawerWidth = 240;
 
@@ -63,7 +65,18 @@ const DrawerHeader = styled('div')(({theme}) => ({
     ...theme.mixins.toolbar,
 }));
 
-export default function Sidebar({open, handleDrawerClose}) {
+// eslint-disable-next-line react/prop-types
+export default function Sidebar({setCategory, open, handleDrawerClose}) {
+    const clickItem = (item) => {
+        setCategory(item.value);
+    }
+
+    const list = [
+        {icon: <PersonIcon/>, text: 'Friend', value: Friend},
+        {icon: <ChatBubbleIcon/>, text: 'Chat', value: Chat},
+        {icon: <AccountCircleIcon/>, text: 'MyPage', value: MyPage},
+    ];
+
     return (
         <Drawer variant="permanent" open={open}>
             <DrawerHeader>
@@ -73,11 +86,7 @@ export default function Sidebar({open, handleDrawerClose}) {
             </DrawerHeader>
             <Divider/>
             <List>
-                {[
-                    {icon: <PersonIcon/>, text: 'Friend'},
-                    {icon: <ChatBubbleIcon/>, text: 'Chat'},
-                    {icon: <AccountCircleIcon/>, text: 'My'},
-                ].map((item) => (
+                {list.map((item) => (
                     <ListItem key={item.text} disablePadding sx={{display: 'block'}}>
                         <ListItemButton
                             sx={{
@@ -85,6 +94,7 @@ export default function Sidebar({open, handleDrawerClose}) {
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
                             }}
+                            onClick={() => clickItem(item)}
                         >
                             <ListItemIcon
                                 sx={{
