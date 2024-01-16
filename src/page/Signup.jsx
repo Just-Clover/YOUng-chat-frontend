@@ -46,9 +46,6 @@ const Signup = () => {
                 console.log(user.code);
                 setDisabled(true);
                 console.log(response + "성공");
-            }).catch((error) => {
-                console.log(error + "실패");
-                console.log(error.data);
             });
     }
     const handleClickOpen = async () => {
@@ -59,8 +56,6 @@ const Signup = () => {
         setOpen(true);
         await mailSend(user.email).then((response) => {
             console.log(response);
-        }).catch((error) => {
-            console.log(error);
         });
     };
 
