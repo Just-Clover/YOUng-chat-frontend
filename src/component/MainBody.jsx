@@ -1,6 +1,10 @@
 import {Avatar, Box, Button, Paper, Typography} from "@mui/material";
 import React from "react";
+import {styled} from "@mui/material/styles";
 
+const DrawerHeader = styled('div')(({theme}) => ({
+    ...theme.mixins.toolbar,
+}));
 const MainBody = () => {
     return (
         <Box
@@ -8,10 +12,12 @@ const MainBody = () => {
             sx={{
                 flexGrow: 1,
                 p: 3,
-                width: 'calc(40%)',
-                height: 'calc(100%)'
+                // width: 'calc(40%)',
+                // height: 'calc(100%)'
+                flexBasis: '67%'
             }}
         >
+            <DrawerHeader/>
             <Paper sx={{
                 maxWidth: 500,
                 my: 1,

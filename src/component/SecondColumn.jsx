@@ -5,8 +5,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 
 const SecondColumn = () => {
     return (
-        <Box sx={{width: 240, bgcolor: 'background.paper'}}>
-            <List sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
+        <Box sx={{flexGrow: 1, p: 3, flexBasis: '33%', bgcolor: 'background.paper', maxWidth: 'none'}}>
+            <List sx={{width: '100%', pt: 1, pb: 1}}>
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar>
                         <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg"/>
@@ -44,7 +44,6 @@ const SecondColumn = () => {
                 <ListItemButton>
                     <ListItemText primary="- 비밀번호 변경"/>
                 </ListItemButton>
-                {/* Add more items if necessary */}
             </List>
         </Box>
     );

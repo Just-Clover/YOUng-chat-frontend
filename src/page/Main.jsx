@@ -1,17 +1,21 @@
-import React from 'react';
-import {Box, CssBaseline} from '@mui/material';
+import React, {useState} from 'react';
+import {Box} from '@mui/material';
 import Header from "../component/Header.jsx";
 import Footer from "../component/Footer.jsx";
+import MainBody from "../component/MainBody.jsx";
+import SecondColumn from "../component/SecondColumn.jsx";
+import Sidebar from "../component/Sidebar.jsx";
 
 const Main = () => {
+    const [open, setOpen] = useState(false);
+
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
-            <CssBaseline/>
-            <Header/>
+            <Header open={open} handleDrawerOpen={() => setOpen(true)}/>
             <Box component="main" sx={{display: 'flex', flexGrow: 1, mt: 8}}>
-                {/*<Sidebar/>*/}
-                {/*<SecondColumn/>*/}
-                {/*<MainBody/>*/}
+                <Sidebar open={open} handleDrawerClose={() => setOpen(false)}/>
+                <SecondColumn/>
+                <MainBody/>
             </Box>
             <Footer/>
         </Box>
