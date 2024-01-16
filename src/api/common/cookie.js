@@ -13,11 +13,7 @@ export const getCookie = (name) => {
 
 export const setAccessToken = (value) => {
     cookies.remove("AccessToken");
-    const expirationTime = new Date();
-    expirationTime.setTime(expirationTime.getTime() + 30 * 60 * 1000); // 30 minutes
-    return cookies.set("AccessToken", value, {
-        expires: expirationTime
-    });
+    return cookies.set("AccessToken", value);
 }
 
 export const setRefreshToken = (value) => {
