@@ -1,10 +1,7 @@
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import MuiAppBar from '@mui/material/AppBar';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import Box from "@mui/material/Box";
-import React from 'react';
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import {styled} from "@mui/material/styles";
@@ -29,7 +26,7 @@ const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open'})
     }),
 );
 
-
+// eslint-disable-next-line react/prop-types
 export default function Header({open, handleDrawerOpen}) {
     return (
         <AppBar position="fixed" open={open} sx={{bgcolor: '#9ccc65'}}>
@@ -64,10 +61,6 @@ export default function Header({open, handleDrawerOpen}) {
                     >
                         <span>YOU</span>ngChat
                     </Typography>
-                </Box>
-                <Box sx={{display: 'flex', alignItems: 'center'}}>
-                    <PersonAddAltIcon fontSize="large" sx={{mr: 2}}/>
-                    <PersonSearchIcon fontSize="large"/>
                 </Box>
             </Toolbar>
         </AppBar>
