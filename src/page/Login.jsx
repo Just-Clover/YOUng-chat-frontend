@@ -41,8 +41,6 @@ const Login = () => {
             setAccessToken(accessToken);
             setRefreshToken(refreshToken);
             navigate("/");
-        }).catch((error) => {
-            console.log(error);
         });
     };
 

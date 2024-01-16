@@ -10,7 +10,7 @@ function createInstance(url) {
       "Content-Type": "application/json",
     }
   });
-  return instance;
+  return setInterceptors(instance);
 }
 
 function createAuthInstance(url) {
@@ -23,6 +23,5 @@ function createAuthInstance(url) {
 
 export const noAuthInstance = createInstance('/api/v1');
 export const user = createAuthInstance('/api/v1/users');
-
-//
-export const chat = createAuthInstance('/api/v1/chat');
+export const friend = createAuthInstance('/api/v1/friends');
+export const chat = createAuthInstance('/api/v1/chats');

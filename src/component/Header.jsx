@@ -27,7 +27,7 @@ const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open'})
 );
 
 // eslint-disable-next-line react/prop-types
-export default function Header({open, handleDrawerOpen}) {
+const Header = ({open, handleDrawerOpen}) => {
     return (
         <AppBar position="fixed" open={open} sx={{bgcolor: '#9ccc65'}}>
             <Toolbar disableGutters sx={{justifyContent: 'space-between'}}>
@@ -66,3 +66,5 @@ export default function Header({open, handleDrawerOpen}) {
         </AppBar>
     );
 }
+
+export default Header;

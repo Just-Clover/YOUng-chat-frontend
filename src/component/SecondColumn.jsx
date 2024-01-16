@@ -1,17 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Avatar, Box, Divider, ListItem, ListItemText, Typography} from '@mui/material';
 import ListItemAvatar from "@mui/material/ListItemAvatar";
+import userStore from "../store/user/UserStore.js";
 import {getProfile} from "../api/user/userApi.js";
 
 // eslint-disable-next-line react/prop-types
 const SecondColumn = ({category}) => {
-    const [username, setUsername] = useState("");
-    const [profileImage, setProfileImage] = useState("");
+    const {username, profileImage, setUsername, setProfileImage} = userStore();
+
     useEffect(() => {
         getProfile().then((response) => {
             setUsername(response.data.data["username"]);
             setProfileImage(response.data.data["profileImage"]);
-        });
+        })
     }, []);
 
     return (
@@ -42,7 +43,6 @@ const SecondColumn = ({category}) => {
             </ListItem>
             <Divider/>
             {category}
-            {/*<MyPage/>*/}
         </Box>
     );
 };
