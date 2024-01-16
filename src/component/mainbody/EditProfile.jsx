@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import EditIcon from '@mui/icons-material/Edit';
+import IconButton from "@mui/material/IconButton";
 
 const EditProfile = () => {
     // const navigate = useNavigate();
@@ -22,14 +23,10 @@ const EditProfile = () => {
     };
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // await signup(user).then(() => {
-        //     alert("회원가입을 축하드립니다!");
-        //     navigate("/login");
-        // }).catch((error) => {
-        //     for (let i = 0; i < error.response.data.data.length; i++) {
-        //         alert(error.response.data.data[i].message);
-        //     }
-        // });
+    };
+
+    const handleBadgeClick = async (event) => {
+        event.preventDefault();
     };
 
     return (
@@ -41,8 +38,15 @@ const EditProfile = () => {
                             overlap="circular"
                             anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
                             badgeContent={
-                                <EditIcon fontSize="large"
-                                          sx={{bgcolor: 'black', color: 'white', borderRadius: '50%', p: 1}}/>
+                                <IconButton onClick={handleBadgeClick}
+                                            sx={{
+                                                bgcolor: 'black', color: 'white', borderRadius: '50%',
+                                                '&:hover': {
+                                                    bgcolor: 'primary.main'
+                                                }
+                                            }}>
+                                    <EditIcon fontSize="large"/>
+                                </IconButton>
                             }
                             sx={{m: 3}}
                         >
