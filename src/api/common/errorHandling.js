@@ -5,6 +5,9 @@ import errors from "./code.js";
  * @param {Error} error
  */
 export async function handleError(error) {
+    if (error.response.status === 403) {
+        console.log(403);
+    }
     const code = error.response.data.code;
     const message = errors()
         .find(error => error.code === code)
