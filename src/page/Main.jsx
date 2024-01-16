@@ -5,12 +5,11 @@ import MainBody from "../component/MainBody.jsx";
 import SecondColumn from "../component/SecondColumn.jsx";
 import Sidebar from "../component/Sidebar.jsx";
 import {useState} from "react";
-import {Friend} from "../component/category/Friend.jsx";
 
 
 const Main = () => {
     const [open, setOpen] = useState(false);
-    const [category, setCategory] = useState(Friend);
+    const [category, setCategory] = useState('friend');
 
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
