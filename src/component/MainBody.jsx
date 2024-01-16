@@ -1,10 +1,7 @@
-import {Avatar, Box, Button, Paper, Typography} from "@mui/material";
+import {Box, Paper} from "@mui/material";
 import React from "react";
-import {styled} from "@mui/material/styles";
+import Profile from "./mainbody/Profile.jsx";
 
-const DrawerHeader = styled('div')(({theme}) => ({
-    ...theme.mixins.toolbar,
-}));
 const MainBody = () => {
     return (
         <Box
@@ -12,31 +9,21 @@ const MainBody = () => {
             sx={{
                 flexGrow: 1,
                 p: 3,
-                // width: 'calc(40%)',
-                // height: 'calc(100%)'
                 flexBasis: '67%'
             }}
         >
-            <DrawerHeader/>
             <Paper sx={{
-                maxWidth: 500,
-                my: 1,
+                height: '100%',
+                my: 'auto',
                 mx: 'auto',
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center'
+                alignItems: 'center',
+                justifyContent: 'center'
             }}>
-                <Avatar sx={{m: 1, bgcolor: 'secondary.main', width: 56, height: 56}}>
-                    {/* Profile Image */}
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    프로필 이미지
-                </Typography>
-                <Typography variant="body1">사용자 이름</Typography>
-                <Button variant="contained" sx={{mt: 3}}>
-                    프로필 변경
-                </Button>
+                <Profile/>
+                {/*<EditProfile/>*/}
             </Paper>
         </Box>
     )
