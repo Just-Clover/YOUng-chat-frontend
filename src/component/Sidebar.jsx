@@ -66,7 +66,7 @@ const DrawerHeader = styled('div')(({theme}) => ({
 }));
 
 // eslint-disable-next-line react/prop-types
-export default function Sidebar({setCategory, open, handleDrawerClose}) {
+const Sidebar = ({setCategory, open, handleDrawerClose}) => {
     const clickItem = (item) => {
         setCategory(item.value);
     }
@@ -137,3 +137,4 @@ export default function Sidebar({setCategory, open, handleDrawerClose}) {
     );
 }
 
+export default Sidebar;
