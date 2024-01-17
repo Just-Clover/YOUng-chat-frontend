@@ -1,26 +1,33 @@
 import {noAuthInstance, user} from "../index";
 
 export const signup = (userData) => {
-  return noAuthInstance.post("/users/signup", userData);
+    return noAuthInstance.post("/users/signup", userData);
 }
 
 export const mailSend = (email) => {
-  return noAuthInstance.post("/users/signup/email", {
-    email: email
-  });
+    return noAuthInstance.post("/users/signup/email", {
+        email: email
+    });
 }
 
 export const codeCheck = (email, code) => {
-  return noAuthInstance.patch("/users/signup/email", {
-    email: email,
-    code: code
-  });
+    return noAuthInstance.patch("/users/signup/email", {
+        email: email,
+        code: code
+    });
 }
 
 export const login = (userData) => {
-  return noAuthInstance.post("/users/login", userData);
+    return noAuthInstance.post("/users/login", userData);
 }
 
 export const getProfile = (userId) => {
-  return user.get("/profile", {userId: userId});
+    return user.get("/profile", {userId: userId});
+}
+export const getMyProfile = () => {
+    return user.get("/profile");
+}
+
+export const editProfile = (userId) => {
+    return user.patch("/profile", {userId: userId});
 }
