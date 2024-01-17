@@ -8,7 +8,7 @@ import {Chat} from "./category/Chat.jsx";
 import {MyPage} from "./category/MyPage.jsx";
 
 // eslint-disable-next-line react/prop-types
-const SecondColumn = ({category, setMainbody}) => {
+const SecondColumn = ({category, setMainBody}) => {
     const {username, profileImage, setUsername, setProfileImage} = userStore();
 
 
@@ -22,11 +22,11 @@ const SecondColumn = ({category, setMainbody}) => {
     const renderCategoryComponent = () => {
         switch (category) {
             case 'friend':
-                return <Friend setMainbody={setMainbody}/>;
+                return <Friend setMainBody={setMainBody}/>;
             case 'chat':
-                return <Chat setMainbody={setMainbody}/>;
+                return <Chat setMainBody={setMainBody}/>;
             case 'myPage':
-                return <MyPage setMainbody={setMainbody}/>;
+                return <MyPage setMainBody={setMainBody}/>;
             default:
                 return null; // 기본값 설정
         }

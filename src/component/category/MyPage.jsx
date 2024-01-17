@@ -3,7 +3,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccounts';
 import PasswordOutlinedIcon from '@mui/icons-material/PasswordOutlined';
 
-export const MyPage = ({setMainbody}) => {
+// eslint-disable-next-line react/prop-types
+export const MyPage = ({setMainBody}) => {
     return (
         <List component="nav" aria-label="mailbox folders" sx={{ml: 2}}>
             <Typography variant="h6"
@@ -14,14 +15,14 @@ export const MyPage = ({setMainbody}) => {
                 My Page
             </Typography>
             <Divider/>
-            <ListItemButton onClick={() => setMainbody('profile')}>
+            <ListItemButton onClick={() => setMainBody('profile')}>
                 <ManageAccountsOutlinedIcon/>
                 <ListItemText primary="사용자 정보 변경" sx={{
                     ml: 2
                 }}/>
             </ListItemButton>
             <Divider/>
-            <ListItemButton onClick={() => setMainbody('editPassword')}>
+            <ListItemButton onClick={() => setMainBody('editPassword')}>
                 <PasswordOutlinedIcon/>
                 <ListItemText primary="비밀번호 변경" sx={{
                     ml: 2

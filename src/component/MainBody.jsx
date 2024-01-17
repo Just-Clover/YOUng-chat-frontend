@@ -2,17 +2,21 @@ import {Box, Paper} from "@mui/material";
 import Profile from "./mainbody/Profile.jsx";
 import EditPassword from "./mainbody/EditPassword.jsx";
 import EditProfile from "./mainbody/EditProfile.jsx";
+import Chatroom from "./mainbody/Chatroom.jsx";
 
-const MainBody = ({mainbody, setMainbody}) => {
+// eslint-disable-next-line react/prop-types
+const MainBody = ({mainBody, setMainBody}) => {
 
-    const renderMainbodyComponent = () => {
-        switch (mainbody) {
+    const renderMainBodyComponent = () => {
+        switch (mainBody) {
             case 'profile' :
-                return <Profile setMainbody={setMainbody}/>
+                return <Profile setMainBody={setMainBody}/>
             case 'editPassword' :
-                return <EditPassword setMainbody={setMainbody}/>
+                return <EditPassword setMainBody={setMainBody}/>
             case 'editProfile' :
-                return <EditProfile setMainbody={setMainbody}/>
+                return <EditProfile setMainBody={setMainBody}/>
+            case 'chatRoom' :
+                return <Chatroom/>
             default:
                 return null;
         }
@@ -37,11 +41,7 @@ const MainBody = ({mainbody, setMainbody}) => {
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-                {renderMainbodyComponent()}
-                {/*<Profile/>*/}
-                {/*<EditProfile/>*/}
-                {/*<EditPassword/>*/}
-                {/*<Chatroom/>*/}
+                {renderMainBodyComponent()}
             </Paper>
         </Box>
     )
