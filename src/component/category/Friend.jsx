@@ -20,25 +20,9 @@ import PersonAddAltTwoToneIcon from '@mui/icons-material/PersonAddAltTwoTone';
 import PersonSearchTwoToneIcon from '@mui/icons-material/PersonSearchTwoTone';
 
 export const Friend = () => {
-    const {friend, setFriend} = friendStore();
+    const {friend, setFriend, selectedFriend, setSelectedFriend} = friendStore();
     const [isLoaded, setIsLoaded] = useState(false);
     const [open, setOpen] = useState(false);
-    const [selectedFriend, setSelectedFriend] = useState(null);
-
-    const handleDeleteFriend = (friendId) => {
-        deleteFriend(friendId).then((response) => {
-            alert(response.data.message);
-            setOpen(false);
-        })
-    }
-    const handleClose = () => {
-        setOpen(false);
-    };
-    const friendClick = (f) => {
-        setOpen(true);
-        setSelectedFriend(f);
-        setIsLoaded(true);
-    }
 
     useEffect(() => {
         if (!isLoaded) {
@@ -49,6 +33,22 @@ export const Friend = () => {
             });
         }
     }, [isLoaded]);
+
+    const handleDeleteFriend = (friendData) => {
+        deleteFriend(friendData.userId).then((response) => {
+            alert(response.data.message);
+            setOpen(false);
+            window.location.reload();
+        })
+    }
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const friendClick = (f) => {
+        setSelectedFriend(f);
+        setOpen(true);
+        setIsLoaded(true);
+    }
 
     return (
         <List component="nav" aria-label="mailbox folders" sx={{ml: 2}}>
@@ -118,7 +118,7 @@ export const Friend = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>대화하기</Button>
-                    <Button sx={{color: "#f44336"}} onClick={() => handleDeleteFriend(selectedFriend.userId)} autoFocus>
+                    <Button sx={{color: "#f44336"}} onClick={() => handleDeleteFriend(selectedFriend)} autoFocus>
                         친구삭제
                     </Button>
                 </DialogActions>
