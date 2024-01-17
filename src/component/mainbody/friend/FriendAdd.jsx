@@ -1,6 +1,6 @@
 import {Button} from "@mui/material";
 
-const FriendSearch = () => {
+const FriendAdd = () => {
     return (
         <Button fullWidth variant="contained"
                 sx={{
@@ -9,9 +9,9 @@ const FriendSearch = () => {
                     mb: 10,
                     bgcolor: '#3f9df9'
                 }}>
-            친구검색
+            친구추가
         </Button>
     )
 }
 
-export default FriendSearch;
+export default FriendAdd;

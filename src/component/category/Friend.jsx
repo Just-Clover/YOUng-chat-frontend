@@ -18,11 +18,13 @@ import Button from "@mui/material/Button";
 import friendStore from "../../store/friend/FriendStore.js";
 import PersonAddAltTwoToneIcon from '@mui/icons-material/PersonAddAltTwoTone';
 import PersonSearchTwoToneIcon from '@mui/icons-material/PersonSearchTwoTone';
+import mainBodyStore from "../../store/main/MainBodyStore.js";
 
 export const Friend = () => {
     const {friend, setFriend, selectedFriend, setSelectedFriend} = friendStore();
     const [isLoaded, setIsLoaded] = useState(false);
     const [open, setOpen] = useState(false);
+    const {setMainBody} = mainBodyStore();
 
     useEffect(() => {
         if (!isLoaded) {
@@ -55,9 +57,12 @@ export const Friend = () => {
             <Typography variant="h6" sx={{fontWeight: 'bold', mb: 1}}>
                 Friend
             </Typography>
-            <ListItemButton sx={{
-                bgcolor: "#f9fbe3"
-            }}>
+            <ListItemButton
+                onClick={() => setMainBody("friendAdd")}
+                sx={{
+                    bgcolor: "#f9fbe3"
+                }}
+            >
                 <PersonAddAltTwoToneIcon/>
                 <ListItemText primary="친구 추가" sx={{
                     ml: 2,
@@ -65,9 +70,11 @@ export const Friend = () => {
                 }}/>
             </ListItemButton>
             <Divider/>
-            <ListItemButton sx={{
-                bgcolor: "#f9fbe7"
-            }}>
+            <ListItemButton
+                onClick={() => setMainBody("friendSearch")}
+                sx={{
+                    bgcolor: "#f9fbe7"
+                }}>
                 <PersonSearchTwoToneIcon/>
                 <ListItemText primary="친구 검색" sx={{
                     fontWeight: 'bold',
