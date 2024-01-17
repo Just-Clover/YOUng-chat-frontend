@@ -48,10 +48,8 @@ const EditProfile = ({setMainbody}) => {
             alert("프로필 수정이 완료되었습니다.")
             setMainbody('profile');
         }).catch((error) => {
-            if (error.response && error.response.data) {
-                alert(error.response.data.message);
-            } else {
-                alert('An error occurred');
+            for (let i = 0; i < error.response.data.data.length; i++) {
+                alert(error.response.data.data[i].message);
             }
         })
     };
