@@ -16,6 +16,11 @@ export const setAccessToken = (value) => {
     return cookies.set("AccessToken", value);
 }
 
+export const deleteToken = () => {
+    cookies.remove("AccessToken");
+    cookies.remove("RefreshToken");
+}
+
 export const setRefreshToken = (value) => {
     cookies.remove("RefreshToken");
     const expirationTime = new Date();
