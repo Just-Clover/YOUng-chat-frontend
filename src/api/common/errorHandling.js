@@ -7,6 +7,7 @@ import errors from "./code.js";
 export async function handleError(error) {
     if (error.response.status === 403) {
         console.log(403);
+        return;
     }
     const code = error.response.data.code;
     const message = errors()
