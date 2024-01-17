@@ -20,7 +20,7 @@ const MainBody = ({mainbody, setMainbody}) => {
 
     return (
         <Box
-            component="main" s
+            component="main"
             sx={{
                 flexGrow: 1,
                 p: 3,

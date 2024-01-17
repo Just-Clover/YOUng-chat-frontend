@@ -22,12 +22,26 @@ export const login = (userData) => {
 }
 
 export const getProfile = (userId) => {
-    return user.get("/profile", {userId: userId});
-}
-export const getMyProfile = () => {
-    return user.get("/profile");
+    return user.get("/profile", {params: {userId: userId}});
 }
 
-export const editProfile = (userId) => {
-    return user.patch("/profile", {userId: userId});
+export const editProfile = (userId, username, file) => {
+    const formData = new FormData();
+
+    //json 타입으로 데이터를 넘기기 위한 작업
+    const json = JSON.stringify({username});
+    const blob = new Blob([json], {type: "application/json;charset=utf-8"});
+    formData.append("req", blob);
+
+    // 파일 추가
+    if (file) {
+        formData.append('image', file, file.name);
+    }
+
+    return user.patch(`/profile?userId=${userId}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+
 }

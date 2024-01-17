@@ -4,14 +4,17 @@ import {handleError} from "./errorHandling.js";
 export function setInterceptors(instance) {
     instance.interceptors.request.use(
         function (config) {
+            // multipart/form-data 요청인 경우 Content-Type 헤더를 수정하지 않음
+            if (!(config.data instanceof FormData)) {
+                config.headers['Content-Type'] = 'application/json;charset=utf-8';
+            }
+
             const accessToken = getCookie('AccessToken');
             const refreshToken = getCookie('RefreshToken');
 
-            config.headers = {
-                'Content-Type': 'application/json;charset=utf-8',
-                'AccessToken': accessToken,
-                'RefreshToken': refreshToken
-            };
+            config.headers['AccessToken'] = accessToken;
+            config.headers['RefreshToken'] = refreshToken;
+
             return config;
         },
         function (error) {

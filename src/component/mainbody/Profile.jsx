@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Avatar, Box, Button, Grid, Typography} from '@mui/material';
 import userStore from "../../store/user/UserStore.js";
-import {getMyProfile} from "../../api/user/userApi.js";
+import {getProfile} from "../../api/user/userApi.js";
 
 // eslint-disable-next-line react/prop-types
 const Profile = ({setMainbody}) => {
@@ -9,12 +9,12 @@ const Profile = ({setMainbody}) => {
 
 
     useEffect(() => {
-        getMyProfile().then((response) => {
+        getProfile().then((response) => {
             setUsername(response.data.data["username"]);
             setProfileImage(response.data.data["profileImage"]);
             setEmail(response.data.data["email"]);
         })
-    }, []);
+    }, [setUsername, setProfileImage, setEmail]);
 
     return (
         <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'center'}}>
