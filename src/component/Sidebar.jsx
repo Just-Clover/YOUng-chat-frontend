@@ -14,6 +14,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import IconButton from '@mui/material/IconButton';
 import mainBodyStore from "../store/main/MainBodyStore.js";
+import {logout} from "../api/user/userApi.js";
+import {deleteToken} from "../api/common/cookie.js";
 
 const drawerWidth = 240;
 
@@ -76,6 +78,14 @@ const Sidebar = ({setCategory, open, handleDrawerClose}) => {
         {icon: <AccountCircleIcon/>, text: 'MyPage', value: 'myPage'},
     ];
 
+    const handleLogout = () => {
+        logout().then(() => {
+            alert("로그아웃을 성공하였습니다.");
+            window.location.href = "/";
+            deleteToken();
+        });
+    }
+
     return (
         <Drawer variant="permanent" open={open}>
             <DrawerHeader>
@@ -118,6 +128,7 @@ const Sidebar = ({setCategory, open, handleDrawerClose}) => {
                             justifyContent: open ? 'initial' : 'center',
                             px: 2.5,
                         }}
+                        onClick={handleLogout}
                     >
                         <ListItemIcon
                             sx={{

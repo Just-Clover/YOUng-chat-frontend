@@ -49,3 +49,7 @@ export const editProfile = (userId, username, file) => {
 export const editPassword = (userData) => {
     return user.patch("/password", userData);
 }
+
+export const logout = () => {
+    return user.get("/logout");
+}
