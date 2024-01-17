@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {Avatar, Box, Button, Grid, Typography} from '@mui/material';
 import userStore from "../../store/user/UserStore.js";
 import {getProfile} from "../../api/user/userApi.js";
 
 // eslint-disable-next-line react/prop-types
-const Profile = ({setMainbody}) => {
+const Profile = ({setMainBody}) => {
     const {username, profileImage, email, setUsername, setProfileImage, setEmail} = userStore();
 
 
@@ -37,7 +37,7 @@ const Profile = ({setMainbody}) => {
                         <Typography variant="body1">
                             {email}
                         </Typography>
-                        <Button onClick={() => setMainbody('editProfile')} fullWidth variant="contained"
+                        <Button onClick={() => setMainBody('editProfile')} fullWidth variant="contained"
                                 sx={{
                                     fontSize: '15px',
                                     mt: 3,

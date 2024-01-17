@@ -8,7 +8,7 @@ import userStore from "../../store/user/UserStore.js";
 import {editProfile, getProfile} from "../../api/user/userApi.js";
 
 // eslint-disable-next-line react/prop-types
-const EditProfile = ({setMainbody}) => {
+const EditProfile = ({setMainBody}) => {
     const {userId, username, profileImage, setUserId, setUsername, setProfileImage} = userStore();
     const [user, setUser] = useState({
         username: username
@@ -46,7 +46,7 @@ const EditProfile = ({setMainbody}) => {
 
         await editProfile(userId, user.username, file).then(() => {
             alert("프로필 수정이 완료되었습니다.")
-            setMainbody('profile');
+            setMainBody('profile');
         }).catch((error) => {
             if (error.response && error.response.data) {
                 alert(error.response.data.message);
