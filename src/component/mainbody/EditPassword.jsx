@@ -4,11 +4,9 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import {useNavigate} from "react-router-dom";
+import {editPassword} from "../../api/user/userApi.js";
 
-const EditPassword = () => {
-    const navigate = useNavigate();
-
+const EditPassword = ({setMainbody}) => {
     const handleInputChange = (event) => {
         const {name, value} = event.target;
         setUser((prevUser) => ({
@@ -24,7 +22,15 @@ const EditPassword = () => {
     });
 
     const handleSubmit = async (event) => {
-        // event.preventDefault();
+        event.preventDefault();
+        await editPassword(user).then(() => {
+            alert("비밀번호 수정이 완료되었습니다.")
+            setMainbody('profile');
+        }).catch((error) => {
+            for (let i = 0; i < error.response.data.data.length; i++) {
+                alert(error.response.data.data[i].message);
+            }
+        });
     };
 
     return (
