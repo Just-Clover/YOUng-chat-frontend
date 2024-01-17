@@ -4,6 +4,8 @@ import EditPassword from "./mainbody/EditPassword.jsx";
 import EditProfile from "./mainbody/EditProfile.jsx";
 import Chatroom from "./mainbody/Chatroom.jsx";
 import mainBodyStore from "../store/main/MainBodyStore.js";
+import FriendSearch from "./mainbody/friend/FriendSearch.jsx";
+import FriendAdd from "./mainbody/friend/FriendAdd.jsx";
 
 // eslint-disable-next-line react/prop-types
 const MainBody = () => {
@@ -19,6 +21,10 @@ const MainBody = () => {
                 return <EditProfile/>
             case 'chatRoom' :
                 return <Chatroom/>
+            case 'friendSearch':
+                return <FriendSearch/>
+            case 'friendAdd':
+                return <FriendAdd/>
             default:
                 return null;
         }
