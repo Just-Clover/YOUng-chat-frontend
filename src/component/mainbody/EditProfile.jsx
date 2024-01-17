@@ -6,9 +6,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from "@mui/material/IconButton";
 import userStore from "../../store/user/UserStore.js";
 import {editProfile, getProfile} from "../../api/user/userApi.js";
+import mainBodyStore from "../../store/main/MainBodyStore.js";
 
 // eslint-disable-next-line react/prop-types
-const EditProfile = ({setMainBody}) => {
+const EditProfile = () => {
+    const {setMainBody} = mainBodyStore();
     const {userId, username, profileImage, setUserId, setUsername, setProfileImage} = userStore();
     const [user, setUser] = useState({
         username: username
@@ -48,9 +50,7 @@ const EditProfile = ({setMainBody}) => {
             alert("프로필 수정이 완료되었습니다.")
             setMainBody('profile');
         }).catch((error) => {
-            for (let i = 0; i < error.response.data.data.length; i++) {
-                alert(error.response.data.data[i].message);
-            }
+            console.log(error);
         })
     };
 

@@ -13,6 +13,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import IconButton from '@mui/material/IconButton';
+import mainBodyStore from "../store/main/MainBodyStore.js";
 
 const drawerWidth = 240;
 
@@ -62,10 +63,12 @@ const DrawerHeader = styled('div')(({theme}) => ({
     ...theme.mixins.toolbar,
 }));
 
+// eslint-disable-next-line react/prop-types
 const Sidebar = ({setCategory, open, handleDrawerClose}) => {
     const clickItem = (item) => {
         setCategory(item.value);
     }
+    const {setMainBody} = mainBodyStore();
 
     const list = [
         {icon: <PersonIcon/>, text: 'Friend', value: 'friend'},
@@ -83,7 +86,7 @@ const Sidebar = ({setCategory, open, handleDrawerClose}) => {
             <Divider/>
             <List>
                 {list.map((item) => (
-                    <ListItem key={item.text} disablePadding sx={{display: 'block'}}>
+                    <ListItem key={item.text} disablePadding sx={{display: 'block'}} onClick={() => setMainBody("null")}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,

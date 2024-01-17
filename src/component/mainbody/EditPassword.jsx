@@ -5,9 +5,11 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import {editPassword} from "../../api/user/userApi.js";
+import mainBodyStore from "../../store/main/MainBodyStore.js";
 
 // eslint-disable-next-line react/prop-types
-const EditPassword = ({setMainBody}) => {
+const EditPassword = () => {
+    const {setMainBody} = mainBodyStore();
     const handleInputChange = (event) => {
         const {name, value} = event.target;
         setUser((prevUser) => ({

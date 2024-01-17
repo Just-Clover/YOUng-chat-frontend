@@ -10,7 +10,7 @@ import {useState} from "react";
 const Main = () => {
     const [open, setOpen] = useState(false);
     const [category, setCategory] = useState('friend');
-    const [mainBody, setMainBody] = useState('null');
+
 
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
@@ -18,8 +18,8 @@ const Main = () => {
             <Box component="main" sx={{display: 'flex', flexGrow: 1, mt: 8}}>
                 <Sidebar
                     setCategory={setCategory} open={open} handleDrawerClose={() => setOpen(false)}/>
-                <SecondColumn setMainBody={setMainBody} category={category}/>
-                <MainBody mainBody={mainBody} setMainBody={setMainBody}/>
+                <SecondColumn category={category}/>
+                <MainBody/>
             </Box>
             <Footer/>
         </Box>

@@ -2,9 +2,11 @@ import {Divider, List, ListItemText, Typography} from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccounts';
 import PasswordOutlinedIcon from '@mui/icons-material/PasswordOutlined';
+import mainBodyStore from "../../store/main/MainBodyStore.js";
 
 // eslint-disable-next-line react/prop-types
-export const MyPage = ({setMainBody}) => {
+export const MyPage = () => {
+    const {setMainBody} = mainBodyStore();
     return (
         <List component="nav" aria-label="mailbox folders" sx={{ml: 2}}>
             <Typography variant="h6"

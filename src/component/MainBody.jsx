@@ -3,18 +3,20 @@ import Profile from "./mainbody/Profile.jsx";
 import EditPassword from "./mainbody/EditPassword.jsx";
 import EditProfile from "./mainbody/EditProfile.jsx";
 import Chatroom from "./mainbody/Chatroom.jsx";
+import mainBodyStore from "../store/main/MainBodyStore.js";
 
 // eslint-disable-next-line react/prop-types
-const MainBody = ({mainBody, setMainBody}) => {
+const MainBody = () => {
 
+    const {mainBody} = mainBodyStore();
     const renderMainBodyComponent = () => {
         switch (mainBody) {
             case 'profile' :
-                return <Profile setMainBody={setMainBody}/>
+                return <Profile/>
             case 'editPassword' :
-                return <EditPassword setMainBody={setMainBody}/>
+                return <EditPassword/>
             case 'editProfile' :
-                return <EditProfile setMainBody={setMainBody}/>
+                return <EditProfile/>
             case 'chatRoom' :
                 return <Chatroom/>
             default:

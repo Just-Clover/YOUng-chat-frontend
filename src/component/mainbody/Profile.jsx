@@ -2,11 +2,13 @@ import {useEffect} from 'react';
 import {Avatar, Box, Button, Grid, Typography} from '@mui/material';
 import userStore from "../../store/user/UserStore.js";
 import {getProfile} from "../../api/user/userApi.js";
+import mainBodyStore from "../../store/main/MainBodyStore.js";
 
 // eslint-disable-next-line react/prop-types
-const Profile = ({setMainBody}) => {
+const Profile = () => {
     const {username, profileImage, email, setUsername, setProfileImage, setEmail} = userStore();
 
+    const {setMainBody} = mainBodyStore();
 
     useEffect(() => {
         getProfile().then((response) => {
