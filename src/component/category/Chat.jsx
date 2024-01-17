@@ -4,22 +4,30 @@ import {getChatRoomList} from "../../api/chat-room/chatRoomApi.js";
 import chatRoomStore from "../../store/chat-room/ChatRoomStore.js";
 import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
+import mainBodyStore from "../../store/main/MainBodyStore.js";
+import selectedChatRoomStore from "../../store/chat-room/SelectedChatRoomStore.js";
 
 export const Chat = () => {
+    const {setMainBody} = mainBodyStore();
     const {chatRoom, setChatRoom} = chatRoomStore();
+    const {setSelectedChatRoomId} = selectedChatRoomStore();
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        if (!isLoaded) {
-            getChatRoomList().then((response) => {
-                setChatRoom(response.data.data);
-                setIsLoaded(true);
-            });
-        }
-    }, []);
+            if (!isLoaded) {
+                getChatRoomList().then((response) => {
+                    setChatRoom(response.data.data);
+                    setIsLoaded(true);
+                });
+            }
+        },
+        [isLoaded, setChatRoom, setIsLoaded]);
 
     const chatRoomClick = (room) => {
         console.log(room);
+        console.log(room.chatRoomId);
+        setMainBody('chatRoom');
+        setSelectedChatRoomId(room.chatRoomId);
     };
     return (
         <List component="nav" aria-label="mailbox folders" sx={{ml: 2}}>
