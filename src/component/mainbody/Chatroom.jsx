@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 const Chatroom = () => {
     return (
         <Box sx={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column'}}>
-            <ChatHeader chatRoomName="Chat Room Name"/>
+            <ChatHeader/>
             <Box sx={{flexGrow: 1, overflowY: 'auto'}}>
                 <MessageList/>
             </Box>
