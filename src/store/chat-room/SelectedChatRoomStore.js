@@ -1,9 +1,11 @@
 import {create} from "zustand";
 import {persist} from "zustand/middleware";
 
-const selectedChatRoomStore = create(persist(set => ({
+const selectedChatRoomStore = create(persist((set) => ({
     selectedChatRoomId: 0,
-    setSelectedChatRoom: (chatRoomId) => set({selectedChatRoomId: chatRoomId})
+    selectedChatRoomTitle: "",
+    setSelectedChatRoomId: (chatRoomId) => set({selectedChatRoomId: chatRoomId}),
+    setSelectedChatRoomTitle: (chatRoomTitle) => set({selectedChatRoomTitle: chatRoomTitle})
 }), {
     name: 'selected-chat-room-store'
 }));
