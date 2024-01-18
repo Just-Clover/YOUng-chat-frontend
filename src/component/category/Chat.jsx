@@ -1,5 +1,5 @@
 import {List, ListItem, ListItemText, Typography} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {getChatRoomList} from "../../api/chat-room/chatRoomApi.js";
 import chatRoomStore from "../../store/chat-room/ChatRoomStore.js";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -10,7 +10,7 @@ import selectedChatRoomStore from "../../store/chat-room/SelectedChatRoomStore.j
 export const Chat = () => {
     const {setMainBody} = mainBodyStore();
     const {chatRoom, setChatRoom} = chatRoomStore();
-    const {setSelectedChatRoomId} = selectedChatRoomStore();
+    const {setSelectedChatRoomId, setSelectedChatRoomTitle} = selectedChatRoomStore();
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
@@ -24,18 +24,17 @@ export const Chat = () => {
         [isLoaded, setChatRoom, setIsLoaded]);
 
     const chatRoomClick = (room) => {
-        console.log(room);
-        console.log(room.chatRoomId);
         setMainBody('chatRoom');
-        setSelectedChatRoomId(room.chatRoomId);
+        setSelectedChatRoomId(room['chatRoomId']);
+        setSelectedChatRoomTitle(room['title']);
     };
+
     return (
         <List component="nav" aria-label="mailbox folders" sx={{ml: 2}}>
             <Typography variant="h6"
                         sx={{
                             fontWeight: 'bold',
                             mb: 2
-
                         }}>
                 Chat
             </Typography>
@@ -58,7 +57,6 @@ export const Chat = () => {
                                     {room.title}<br/>
                                 </Typography>
                             }
-
                             secondary={
                                 <Typography
                                     component="span"
