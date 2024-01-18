@@ -53,3 +53,11 @@ export const editPassword = (userData) => {
 export const logout = () => {
     return user.get("/logout");
 }
+
+export const userSearch = (keyword) => {
+    return user.get("/search", {
+        headers: {
+            'Keyword': keyword
+        }
+    })
+}
