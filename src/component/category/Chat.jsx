@@ -1,5 +1,5 @@
 import {List, ListItem, ListItemText, Typography} from "@mui/material";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {getChatRoomList} from "../../api/chat-room/chatRoomApi.js";
 import chatRoomStore from "../../store/chat-room/ChatRoomStore.js";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -11,17 +11,17 @@ export const Chat = () => {
     const {setMainBody} = mainBodyStore();
     const {chatRoom, setChatRoom} = chatRoomStore();
     const {setSelectedChatRoomId, setSelectedChatRoomTitle} = selectedChatRoomStore();
-    const [isLoaded, setIsLoaded] = useState(false);
+    // const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-            if (!isLoaded) {
-                getChatRoomList().then((response) => {
-                    setChatRoom(response.data.data);
-                    setIsLoaded(true);
-                });
-            }
-        },
-        [isLoaded, setChatRoom, setIsLoaded]);
+        const interval = setInterval(() => {
+            getChatRoomList().then(response => {
+                setChatRoom(response.data.data);
+            });
+        }, 1000); // 1초마다 실행
+
+        return () => clearInterval(interval); // 컴포넌트 해제 시 인터벌 정지
+    }, []);
 
     const chatRoomClick = (room) => {
         setMainBody('chatRoom');

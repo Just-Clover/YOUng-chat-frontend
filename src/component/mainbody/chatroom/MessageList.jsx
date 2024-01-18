@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Box, Paper, Typography} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import selectedChatRoomStore from "../../../store/chat-room/SelectedChatRoomStore.js";
@@ -10,7 +10,7 @@ const formatDate = (dateString) => {
     return `${date.getHours()}:${date.getMinutes()}`;
 };
 
-
+// eslint-disable-next-line react/prop-types
 const OtherUserMessage = ({chat, showAvatarAndName}) => {
     return (
         <Box sx={{display: 'flex', alignItems: 'start', mb: 2}}>
@@ -33,6 +33,7 @@ const OtherUserMessage = ({chat, showAvatarAndName}) => {
         </Box>
     );
 };
+
 
 const MyMessage = ({chat}) => {
     return (
@@ -61,29 +62,58 @@ const MessageList = () => {
     const [messages, setMessages] = useState([]);
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {userId} = userStore();
+    const messagesEndRef = useRef(null); // 새 메시지로 스크롤하기 위한 ref
+
+    const scrollToBottom = () => {
+        setTimeout(() => {
+            messagesEndRef.current?.scrollIntoView({behavior: "smooth"});
+        }, 100);
+    };
 
     useEffect(() => {
-        if (selectedChatRoomId) {
-            getDetailChatRoom(selectedChatRoomId).then(response => {
-                const formattedMessages = response.data.data.chatResList.map((message, index, array) => {
-                    // 첫 번째 메시지이거나 이전 메시지의 사용자 ID가 현재 메시지의 사용자 ID와 다른 경우에만 프로필 표시
+        // 채팅방 ID가 변경될 때 초기 메시지를 불러오는 함수
+        const fetchInitialMessages = async () => {
+            if (selectedChatRoomId) {
+                const response = await getDetailChatRoom(selectedChatRoomId);
+                const initialMessages = response.data.data.chatResList.map((message, index, array) => {
                     const showAvatarAndName = index === 0 || array[index - 1].userId !== message.userId;
                     return {...message, showAvatarAndName};
                 });
-                setMessages(formattedMessages);
-            });
-        }
+                setMessages(initialMessages);
+                scrollToBottom();
+            }
+        };
+        fetchInitialMessages();
     }, [selectedChatRoomId]);
 
-    return (
-        < Box sx={{p: 2}}>
-            {
-                messages.map((message, index) => (
-                    message.userId === userId ?
-                        <MyMessage key={index} chat={message}/> :
-                        <OtherUserMessage key={index} chat={message} showAvatarAndName={message.showAvatarAndName}/>
-                ))
+    useEffect(() => {
+        // 새 메시지를 주기적으로 확인하는 함수
+        const interval = setInterval(async () => {
+            if (selectedChatRoomId) {
+                const response = await getDetailChatRoom(selectedChatRoomId);
+                const newMessages = response.data.data.chatResList.map((message, index, array) => {
+                    const showAvatarAndName = index === 0 || array[index - 1].userId !== message.userId;
+                    return {...message, showAvatarAndName};
+                });
+
+                if (newMessages.length > messages.length) {
+                    setMessages(newMessages);
+                    scrollToBottom();
+                }
             }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [selectedChatRoomId, messages]);
+
+    return (
+        <Box sx={{p: 2, maxHeight: 'calc(100vh - 400px)', overflowY: 'auto'}}>
+            {messages.map((message, index) => (
+                message.userId === userId ?
+                    <MyMessage key={index} chat={message}/> :
+                    <OtherUserMessage key={index} chat={message} showAvatarAndName={message.showAvatarAndName}/>
+            ))}
+            <div ref={messagesEndRef}/>
         </Box>
     );
 };
