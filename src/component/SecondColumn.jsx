@@ -9,14 +9,15 @@ import {MyPage} from "./category/MyPage.jsx";
 
 // eslint-disable-next-line react/prop-types
 const SecondColumn = ({category}) => {
-    const {username, profileImage, setUsername, setProfileImage} = userStore();
+    const {username, profileImage, setUserId, setUsername, setProfileImage} = userStore();
 
     useEffect(() => {
         getProfile().then((response) => {
+            setUserId(response.data.data["userId"]);
             setUsername(response.data.data["username"]);
             setProfileImage(response.data.data["profileImage"]);
         })
-    }, []);
+    }, [setUsername, setProfileImage]);
 
     const renderCategoryComponent = () => {
         switch (category) {
