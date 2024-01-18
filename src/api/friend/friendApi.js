@@ -7,3 +7,7 @@ export const getFriendList = () => {
 export const deleteFriend = (friendId) => {
     return friend.delete(`/${friendId}`);
 }
+
+export const addFriend = (friendId) => {
+    return friend.post(`/${friendId}`);
+}
