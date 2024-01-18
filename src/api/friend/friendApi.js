@@ -11,3 +11,9 @@ export const deleteFriend = (friendId) => {
 export const addFriend = (friendId) => {
     return friend.post(`/${friendId}`);
 }
+
+export const getFriendSearch = (keyword) => {
+    return friend.get("/search", {
+        params: {keyword: keyword}
+    })
+}

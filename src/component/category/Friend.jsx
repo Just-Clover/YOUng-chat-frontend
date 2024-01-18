@@ -59,9 +59,6 @@ export const Friend = () => {
             </Typography>
             <ListItemButton
                 onClick={() => setMainBody("friendAdd")}
-                sx={{
-                    bgcolor: "#f9fbe3"
-                }}
             >
                 <PersonAddAltTwoToneIcon/>
                 <ListItemText primary="친구 추가" sx={{
@@ -72,9 +69,7 @@ export const Friend = () => {
             <Divider/>
             <ListItemButton
                 onClick={() => setMainBody("friendSearch")}
-                sx={{
-                    bgcolor: "#f9fbe7"
-                }}>
+               >
                 <PersonSearchTwoToneIcon/>
                 <ListItemText primary="친구 검색" sx={{
                     fontWeight: 'bold',
