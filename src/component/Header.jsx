@@ -59,7 +59,7 @@ const Header = ({open, handleDrawerOpen}) => {
                             '& span': {color: "#fff176"}, // Use nested selectors for styling
                         }}
                     >
-                        <span>YOU</span>ngChat
+                        <span>YOU</span>ngChat   Test Version
                     </Typography>
                 </Box>
             </Toolbar>
