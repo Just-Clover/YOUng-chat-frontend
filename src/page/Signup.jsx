@@ -17,10 +17,6 @@ import Footer from "../component/Footer.jsx";
 const Signup = () => {
     const navigate = useNavigate();
 
-    const locationLogin = () => {
-        navigate('/login');
-    }
-
     const [user, setUser] = useState({
         username: '',
         email: '',
@@ -185,7 +181,7 @@ const Signup = () => {
                         Sign Up
                     </Button>
                     <Grid container justifyContent="flex-end">
-                        <Link onClick={locationLogin} variant="body2">
+                        <Link href="/login" variant="body2">
                             이미 가입하신 아이디가 존재하나요? 로그인
                         </Link>
                     </Grid>

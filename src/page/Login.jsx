@@ -16,9 +16,7 @@ import {useNavigate} from "react-router-dom";
 
 const Login = () => {
     const navigate = useNavigate();
-    const locationSignup = () => {
-        navigate('/signup');
-    }
+
     const [user, setUser] = useState({
         email: '',
         password: '',
@@ -99,7 +97,7 @@ const Login = () => {
                         Login
                     </Button>
                     <Grid container justifyContent="flex-end">
-                        <Link onClick={locationSignup} variant="body2">
+                        <Link href="/signup" variant="body2">
                             가입하신 적이 없으시나요? 회원가입
                         </Link>
                     </Grid>
