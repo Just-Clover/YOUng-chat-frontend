@@ -4,12 +4,21 @@ import Footer from "../component/Footer.jsx";
 import MainBody from "../component/MainBody.jsx";
 import SecondColumn from "../component/SecondColumn.jsx";
 import Sidebar from "../component/Sidebar.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {deleteToken, getCookie} from "../api/common/cookie.js";
 
 
 const Main = () => {
     const [open, setOpen] = useState(true);
     const [category, setCategory] = useState('friend');
+
+    useEffect(() => {
+        const token = getCookie("RefreshToken");
+        if (!token) {
+            deleteToken();
+            window.location.href = "/login";
+        }
+    }, []);
 
 
     return (
