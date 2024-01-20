@@ -4,7 +4,6 @@ import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccounts';
 import PasswordOutlinedIcon from '@mui/icons-material/PasswordOutlined';
 import mainBodyStore from "../../store/main/MainBodyStore.js";
 
-// eslint-disable-next-line react/prop-types
 export const MyPage = () => {
     const {setMainBody} = mainBodyStore();
     return (
