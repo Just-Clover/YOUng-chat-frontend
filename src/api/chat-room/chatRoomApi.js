@@ -14,3 +14,7 @@ export const editChatRoom = (chatRoomId, title) => {
     });
 };
 
+export const leaveChatRoom = (chatRoomId) => {
+    return chatRoom.delete(`/${chatRoomId}`);
+};
+
