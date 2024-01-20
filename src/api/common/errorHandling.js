@@ -1,4 +1,3 @@
-import errors from "./code.js";
 import {deleteToken} from "./cookie.js";
 
 /**
@@ -7,8 +6,8 @@ import {deleteToken} from "./cookie.js";
  */
 export async function handleError(error) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    if (error.response.status === 403) {
-        console.log(403);
+    if (error.response.status === 401) {
+        console.log(401);
         deleteToken();
         window.location.href = "/login";
         return;
