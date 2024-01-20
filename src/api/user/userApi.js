@@ -43,7 +43,6 @@ export const editProfile = (userId, username, file) => {
             'Content-Type': 'multipart/form-data'
         }
     });
-
 }
 
 export const editPassword = (userData) => {
