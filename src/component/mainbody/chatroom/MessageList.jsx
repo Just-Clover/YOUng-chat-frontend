@@ -39,7 +39,7 @@ OtherUserMessage.propTypes = {
         profileImage: PropTypes.string,
         username: PropTypes.string,
         message: PropTypes.string,
-        messageTime: PropTypes.bool,
+        messageTime: PropTypes.string,
     }),
     showAvatarAndName: PropTypes.bool,
 }
