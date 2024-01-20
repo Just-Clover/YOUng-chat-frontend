@@ -16,14 +16,16 @@ function createInstance(url) {
 function createAuthInstance(url) {
     const instance = axios.create({
         baseURL: rootUrl + url,
-
     });
     return setInterceptors(instance);
 }
 
 export const noAuthInstance = createInstance('/api/v1');
+
 export const user = createAuthInstance('/api/v1/users');
+
 export const friend = createAuthInstance('/api/v1/friends');
+
 export const chatRoom = createAuthInstance('/api/v1/chat-rooms');
 
 export const chat = createAuthInstance('/api/v1/chat-rooms')

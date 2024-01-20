@@ -7,3 +7,10 @@ export const getChatRoomList = () => {
 export const getDetailChatRoom = (chatRoomId) => {
     return chatRoom.get(`/${chatRoomId}`);
 };
+
+export const editChatRoom = (chatRoomId, title) => {
+    return chatRoom.patch(`/${chatRoomId}`, {
+        title: title
+    });
+};
+
