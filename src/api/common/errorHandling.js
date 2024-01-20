@@ -1,4 +1,5 @@
 import {deleteToken} from "./cookie.js";
+import errors from "./code.js";
 
 /**
  * 오류 공통처리

@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Dialog, DialogContent, Divider, List, ListItem, ListItemText, Typography} from "@mui/material";
+import {
+    Avatar,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    Divider,
+    List,
+    ListItem,
+    ListItemText,
+    Typography
+} from "@mui/material";
 import {deleteFriend, getFriendList} from "../../api/friend/friendApi.js";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -32,7 +42,8 @@ export const Friend = () => {
 
     const handleChattingFriend = (friendId) => {
         const friendData = {
-            friendIds: [friendId]
+            friendIds: [friendId],
+            title: ""
         };
 
         createChatRoom(friendData).then(response => {
@@ -75,7 +86,7 @@ export const Friend = () => {
             <Divider/>
             <ListItemButton
                 onClick={() => setMainBody("friendSearch")}
-               >
+            >
                 <PersonSearchTwoToneIcon/>
                 <ListItemText primary="친구 검색" sx={{
                     fontWeight: 'bold',

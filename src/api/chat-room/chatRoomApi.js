@@ -20,5 +20,5 @@ export const leaveChatRoom = (chatRoomId) => {
 
 
 export const createChatRoom = (chatRoomData) => {
-    return chatRoom.post(chatRoomData)
+    return chatRoom.post('', chatRoomData);
 }
