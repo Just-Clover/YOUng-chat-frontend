@@ -7,3 +7,7 @@ export const getChatRoomList = () => {
 export const getDetailChatRoom = (chatRoomId) => {
     return chatRoom.get(`/${chatRoomId}`);
 };
+
+export const createChatRoom = (chatRoomData) => {
+    return chatRoom.post(chatRoomData)
+}

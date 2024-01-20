@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
     Avatar,
     Dialog,
@@ -19,9 +19,12 @@ import friendStore from "../../store/friend/FriendStore.js";
 import PersonAddAltTwoToneIcon from '@mui/icons-material/PersonAddAltTwoTone';
 import PersonSearchTwoToneIcon from '@mui/icons-material/PersonSearchTwoTone';
 import mainBodyStore from "../../store/main/MainBodyStore.js";
+import {createChatRoom} from "../../api/chat-room/chatRoomApi.js";
+import selectedChatRoomStore from "../../store/chat-room/SelectedChatRoomStore.js";
 
 export const Friend = () => {
     const {friend, setFriend, selectedFriend, setSelectedFriend} = friendStore();
+    const {setSelectedChatRoomId, setSelectedChatRoomTitle} = selectedChatRoomStore();
     const [isLoaded, setIsLoaded] = useState(false);
     const [open, setOpen] = useState(false);
     const {setMainBody} = mainBodyStore();
@@ -34,8 +37,20 @@ export const Friend = () => {
                 setIsLoaded(false);
             });
         }
-    }, [isLoaded]);
+    }, [isLoaded, setFriend]);
 
+    const handleChattingFriend = (friendId) => {
+        const friendData = {
+            friendIds: [friendId]
+        };
+
+        createChatRoom(friendData).then(response => {
+            setOpen(false);
+            setMainBody('chatRoom');
+            setSelectedChatRoomId(response.data.data['chatRoomId']);
+            setSelectedChatRoomTitle(response.data.data['title']);
+        });
+    }
     const handleDeleteFriend = (friendData) => {
         deleteFriend(friendData.userId).then((response) => {
             alert(response.data.message);
@@ -69,7 +84,7 @@ export const Friend = () => {
             <Divider/>
             <ListItemButton
                 onClick={() => setMainBody("friendSearch")}
-               >
+            >
                 <PersonSearchTwoToneIcon/>
                 <ListItemText primary="친구 검색" sx={{
                     fontWeight: 'bold',
@@ -119,7 +134,7 @@ export const Friend = () => {
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>대화하기</Button>
+                    <Button onClick={() => handleChattingFriend(selectedFriend.userId)}>대화하기</Button>
                     <Button sx={{color: "#f44336"}} onClick={() => handleDeleteFriend(selectedFriend)} autoFocus>
                         친구삭제
                     </Button>
