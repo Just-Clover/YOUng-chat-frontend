@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import {editPassword} from "../../api/user/userApi.js";
 import mainBodyStore from "../../store/main/MainBodyStore.js";
 
-// eslint-disable-next-line react/prop-types
 const EditPassword = () => {
     const {setMainBody} = mainBodyStore();
     const handleInputChange = (event) => {
@@ -75,7 +74,6 @@ const EditPassword = () => {
                                 value={user.newPassword}
                                 autoComplete="newPassword"
                                 type="password"
-                                autoFocus
                                 onChange={handleInputChange}
                             />
                         </Grid>
@@ -89,7 +87,6 @@ const EditPassword = () => {
                                 value={user.checkNewPassword}
                                 autoComplete="checkNewPassword"
                                 type="password"
-                                autoFocus
                                 onChange={handleInputChange}
                             />
                         </Grid>

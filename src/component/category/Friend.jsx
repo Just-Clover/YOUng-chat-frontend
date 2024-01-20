@@ -1,16 +1,5 @@
-import {useEffect, useState} from 'react';
-import {
-    Avatar,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Divider,
-    List,
-    ListItem,
-    ListItemText,
-    Typography
-} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Avatar, Dialog, DialogContent, Divider, List, ListItem, ListItemText, Typography} from "@mui/material";
 import {deleteFriend, getFriendList} from "../../api/friend/friendApi.js";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -19,6 +8,8 @@ import friendStore from "../../store/friend/FriendStore.js";
 import PersonAddAltTwoToneIcon from '@mui/icons-material/PersonAddAltTwoTone';
 import PersonSearchTwoToneIcon from '@mui/icons-material/PersonSearchTwoTone';
 import mainBodyStore from "../../store/main/MainBodyStore.js";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import {createChatRoom} from "../../api/chat-room/chatRoomApi.js";
 import selectedChatRoomStore from "../../store/chat-room/SelectedChatRoomStore.js";
 
@@ -84,7 +75,7 @@ export const Friend = () => {
             <Divider/>
             <ListItemButton
                 onClick={() => setMainBody("friendSearch")}
-            >
+               >
                 <PersonSearchTwoToneIcon/>
                 <ListItemText primary="친구 검색" sx={{
                     fontWeight: 'bold',
@@ -122,14 +113,25 @@ export const Friend = () => {
                 <DialogContent>
                     {selectedFriend && (
                         <>
-                            <img
-                                src={`${selectedFriend.profileImage}`}
-                                loading="lazy"
-                                style={{width: 200, height: 200}}
-                            />
-                            <DialogTitle id="alert-dialog-title">
-                                {selectedFriend.username}
-                            </DialogTitle>
+                            <Grid item>
+                                <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                                    <Avatar
+                                        src={selectedFriend.profileImage}
+                                        loading="lazy"
+                                        sx={{
+                                            mt: 5,
+                                            mb: 5,
+                                            width: 300,
+                                            height: 300
+                                        }}/>
+                                    <Typography
+                                        component="h1"
+                                        variant="h4"
+                                        sx={{fontWeight: 'bold', mb: 2}}>
+                                        {selectedFriend.username}
+                                    </Typography>
+                                </Box>
+                            </Grid>
                         </>
                     )}
                 </DialogContent>

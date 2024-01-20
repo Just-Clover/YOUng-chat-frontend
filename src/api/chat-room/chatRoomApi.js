@@ -8,6 +8,17 @@ export const getDetailChatRoom = (chatRoomId) => {
     return chatRoom.get(`/${chatRoomId}`);
 };
 
+export const editChatRoom = (chatRoomId, title) => {
+    return chatRoom.patch(`/${chatRoomId}`, {
+        title: title
+    });
+};
+
+export const leaveChatRoom = (chatRoomId) => {
+    return chatRoom.delete(`/${chatRoomId}`);
+};
+
+
 export const createChatRoom = (chatRoomData) => {
     return chatRoom.post(chatRoomData)
 }
