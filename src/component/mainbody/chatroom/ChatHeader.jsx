@@ -31,6 +31,11 @@ const ChatHeader = () => {
         });
     };
 
+    const titleOpenDialog = () => {
+        setTitleOpen(true);
+        setTitle(selectedChatRoomTitle);
+    }
+
     const handleInputChange = (event) => {
         const {value} = event.target;
         setTitle(value);
