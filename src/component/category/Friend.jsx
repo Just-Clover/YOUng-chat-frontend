@@ -42,7 +42,8 @@ export const Friend = () => {
             setSelectedChatRoomId(response.data.data['chatRoomId']);
             setSelectedChatRoomTitle(response.data.data['title']);
         });
-    }
+    };
+
     const handleDeleteFriend = (friendData) => {
         deleteFriend(friendData.userId).then((response) => {
             alert(response.data.message);
@@ -50,9 +51,11 @@ export const Friend = () => {
             window.location.reload();
         })
     }
+
     const handleClose = () => {
         setOpen(false);
     };
+
     const friendClick = (f) => {
         setSelectedFriend(f);
         setOpen(true);
@@ -140,7 +143,6 @@ export const Friend = () => {
                     <Button variant="outlined" color="error" sx={{ml:"20%", mb:"5%", width: "60%", color: "#f44336"}} onClick={() => handleDeleteFriend(selectedFriend)} >
                         친구삭제
                     </Button>
-
             </Dialog>
         </List>
     );
