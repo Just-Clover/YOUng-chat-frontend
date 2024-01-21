@@ -80,7 +80,7 @@ MyMessage.propTypes = {
         messageTime: PropTypes.string,
         isDeleted: PropTypes.bool,
     }),
-    onOpenDeleteDialog: PropTypes.bool
+    onOpenDeleteDialog: PropTypes.func
 }
 
 const MessageList = () => {
@@ -174,8 +174,8 @@ const MessageList = () => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleConfirmDelete} color="primary">확인</Button>
-                    <Button onClick={handleCloseDeleteDialog} color="secondary" autoFocus>취소</Button>
+                    <Button onClick={handleConfirmDelete} color="error" autoFocus>확인</Button>
+                    <Button onClick={handleCloseDeleteDialog} color="primary">취소</Button>
                 </DialogActions>
             </Dialog>
         </Box>
