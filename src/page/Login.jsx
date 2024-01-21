@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Footer from "../component/Footer.jsx";
 import {login} from "../api/user/userApi.js";
-import {setAccessToken, setRefreshToken} from "../api/common/cookie.js";
+import {deleteToken, setAccessToken, setRefreshToken} from "../api/common/cookie.js";
 import {useNavigate} from "react-router-dom";
 
 const Login = () => {
@@ -41,6 +41,10 @@ const Login = () => {
             navigate("/");
         });
     };
+
+    useEffect(() => {
+        deleteToken();
+    }, []);
 
     return (
         <Container component="main" maxWidth="xs">
