@@ -81,7 +81,7 @@ MyMessage.propTypes = {
         isDeleted: PropTypes.bool,
     }),
     onOpenDeleteDialog: PropTypes.func
-}
+};
 
 const MessageList = () => {
     const [messages, setMessages] = useState([]);

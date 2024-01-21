@@ -50,7 +50,7 @@ export const Friend = () => {
             setOpen(false);
             window.location.reload();
         })
-    }
+    };
 
     const handleClose = () => {
         setOpen(false);
@@ -60,7 +60,7 @@ export const Friend = () => {
         setSelectedFriend(f);
         setOpen(true);
         setIsLoaded(true);
-    }
+    };
 
     return (
         <List component="nav" aria-label="mailbox folders" sx={{ml: 2}}>
