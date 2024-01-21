@@ -103,12 +103,11 @@ const EditProfile = () => {
                             defaultValue={username}
                             onChange={handleInputChange}
                         />
-                        <Button onClick={handleSubmit} fullWidth variant="contained"
+                        <Button onClick={handleSubmit} fullWidth variant="outlined"
                                 sx={{
                                     fontSize: '15px',
                                     mt: 3,
                                     mb: 10,
-                                    bgcolor: '#3f9df9'
                                 }}>
                             확인
                         </Button>

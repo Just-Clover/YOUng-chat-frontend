@@ -38,12 +38,11 @@ const Profile = () => {
                         <Typography variant="body1">
                             {email}
                         </Typography>
-                        <Button onClick={() => setMainBody('editProfile')} fullWidth variant="contained"
+                        <Button onClick={() => setMainBody('editProfile')} fullWidth  variant="outlined"
                                 sx={{
                                     fontSize: '15px',
                                     mt: 3,
-                                    mb: 10,
-                                    bgcolor: '#3f9df9'
+                                    mb: 10
                                 }}>
                             프로필 변경
                         </Button>
