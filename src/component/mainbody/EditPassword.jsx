@@ -95,8 +95,8 @@ const EditPassword = () => {
                         type="submit"
                         fullWidth
                         onClick={handleSubmit}
-                        variant="contained"
-                        sx={{mt: 3, mb: 2, bgcolor: '#3f9df9'}}
+                        variant="outlined"
+                        sx={{mt: 6, mb: 2, bgcolor: '#aed581', color: "white"}}
                     >
                         확인
                     </Button>
