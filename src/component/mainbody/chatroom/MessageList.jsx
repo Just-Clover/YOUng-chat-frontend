@@ -19,7 +19,8 @@ import {deleteChat} from "../../../api/chat/chatApi.js";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return `${date.getHours()}:${date.getMinutes()}`;
+    // return `${date.getHours()}:${date.getMinutes()}`;
+    return date.toTimeString().split(' ')[0];
 };
 
 const OtherUserMessage = ({chat, showAvatarAndName}) => {
@@ -31,7 +32,7 @@ const OtherUserMessage = ({chat, showAvatarAndName}) => {
             <Box sx={{display: 'flex', flexDirection: 'column', mr: 1}}>
                 {showAvatarAndName && <Typography variant="caption" sx={{mb: 0.5}}>{chat.username}</Typography>}
                 <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
-                    <Paper sx={{p: 1, bgcolor: 'lightgrey', borderRadius: '10px', mr: 1}}>
+                    <Paper sx={{p: 1, bgcolor: '#b3e5fc', borderRadius: '10px', mr: 1}}>
                         <Typography variant="body1">
                             {chat.isDeleted ? '삭제된 메세지입니다.' : chat.message}
                         </Typography>
@@ -59,11 +60,11 @@ OtherUserMessage.propTypes = {
 const MyMessage = ({chat, onOpenDeleteDialog}) => {
 
     return (
-        <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', mb: 2, maxWidth: '100%'}}>
+        <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', mb: 2, maxWidth: '100%' }}>
             <Typography minWidth="20%" textAlign="right" variant="caption">
                 {formatDate(chat.messageTime)}
             </Typography>
-            <Paper sx={{p: 1, bgcolor: 'lightgrey', borderRadius: '10px', ml: 1, cursor: 'pointer'}}
+            <Paper sx={{p: 1, bgcolor: '#f0f4c3', borderRadius: '10px', ml: 1, cursor: 'pointer'}}
                    onClick={onOpenDeleteDialog}>
                 <Typography variant="body1">
                     {chat.isDeleted ? '삭제된 메세지입니다.' : chat.message}
