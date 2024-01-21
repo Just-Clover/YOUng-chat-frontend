@@ -1,15 +1,5 @@
 import {useEffect, useState} from 'react';
-import {
-    Avatar,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    Divider,
-    List,
-    ListItem,
-    ListItemText,
-    Typography
-} from "@mui/material";
+import {Avatar, Dialog, DialogContent, Divider, List, ListItem, ListItemText, Typography} from "@mui/material";
 import {deleteFriend, getFriendList} from "../../api/friend/friendApi.js";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -146,12 +136,11 @@ export const Friend = () => {
                         </>
                     )}
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => handleChattingFriend(selectedFriend.userId)}>대화하기</Button>
-                    <Button sx={{color: "#f44336"}} onClick={() => handleDeleteFriend(selectedFriend)} autoFocus>
+                    <Button onClick={() => handleChattingFriend(selectedFriend.userId)} autoFocus variant="outlined" sx={{ml:"20%", mb:"5%", width: "60%"}}>대화하기</Button>
+                    <Button variant="outlined" color="error" sx={{ml:"20%", mb:"5%", width: "60%", color: "#f44336"}} onClick={() => handleDeleteFriend(selectedFriend)} >
                         친구삭제
                     </Button>
-                </DialogActions>
+
             </Dialog>
         </List>
     );
