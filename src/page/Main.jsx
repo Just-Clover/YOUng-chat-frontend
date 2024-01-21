@@ -20,7 +20,6 @@ const Main = () => {
         }
     }, []);
 
-
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
             <Header open={open} handleDrawerOpen={() => setOpen(true)}/>

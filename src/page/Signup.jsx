@@ -25,8 +25,8 @@ const Signup = () => {
     });
     const [open, setOpen] = useState(false);
     const [disabled, setDisabled] = useState(false);
-
     const EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
     const handleInputChange = (event) => {
         const {name, value} = event.target;
         setUser((prevUser) => ({
@@ -38,20 +38,19 @@ const Signup = () => {
     const codeCheckClick = async () => {
         setOpen(false);
         await codeCheck(user.email, user.code)
-            .then((response) => {
-                console.log(user.code);
+            .then(() => {
                 setDisabled(true);
-                console.log(response + "성공");
             });
-    }
+    };
+
     const handleClickOpen = async () => {
         if (!user.email.match(EMAIL_REGEX)) {
             alert("이메일 형식이 올바르지 않습니다.");
             return;
         }
         setOpen(true);
-        await mailSend(user.email).then((response) => {
-            console.log(response);
+        await mailSend(user.email).then(() => {
+            alert("이메일에 코드가 전송되었습니다.")
         });
     };
 
@@ -64,11 +63,7 @@ const Signup = () => {
         await signup(user).then(() => {
             alert("회원가입을 축하드립니다!");
             navigate("/login");
-        }).catch((error) => {
-            for (let i = 0; i < error.response.data.data.length; i++) {
-                alert(error.response.data.data[i].message);
-            }
-        });
+        })
     };
 
     return (
@@ -80,8 +75,7 @@ const Signup = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                }}
-            >
+                }}>
                 <Avatar sx={{m: 2, bgcolor: '#9ccc65'}}>
                     <LockOutlinedIcon/>
                 </Avatar>

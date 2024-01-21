@@ -1,4 +1,4 @@
-import {deleteToken, getCookie, setAccessToken} from "./cookie.js";
+import {getCookie, setAccessToken} from "./cookie.js";
 import {handleError} from "./errorHandling.js";
 
 export function setInterceptors(instance) {
@@ -18,8 +18,6 @@ export function setInterceptors(instance) {
             return config;
         },
         function (error) {
-            console.log(error);
-            deleteToken();
             return Promise.reject(error);
         },
     );

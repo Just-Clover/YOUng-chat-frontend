@@ -44,7 +44,6 @@ export const editProfile = (userId, username, file) => {
         }
     });
 }
-
 export const editPassword = (userData) => {
     return user.patch("/password", userData);
 }

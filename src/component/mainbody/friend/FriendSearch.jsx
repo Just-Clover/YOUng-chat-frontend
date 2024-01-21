@@ -28,15 +28,11 @@ const FriendSearch = () => {
         setKeyword(value);
     };
 
-
     const handleSearchFriend = () => {
-        console.log(keyword);
         getFriendSearch(keyword).then((response) => {
             setFriendList(response.data.data);
-            console.log(response.data.data);
         });
     }
-
 
     return (
         <Box sx={{flexGrow: 1, width: "80%"}}>

@@ -27,9 +27,8 @@ const FriendAdd = () => {
             setUserId(response.data.data.userId);
             setUsername(response.data.data.username);
             setProfileImage(response.data.data.profileImage);
-            console.log(response);
         });
-    }
+    };
 
     const handleClose = () => {
         setDialogOpen(false);
@@ -42,14 +41,14 @@ const FriendAdd = () => {
 
     const handleDialog = () => {
         setDialogOpen(true);
-    }
+    };
 
     const handleAddFriend = () => {
         addFriend(userId).then(() => {
             alert("친구 추가 되었습니다.");
             window.location.reload();
-        })
-    }
+        });
+    };
 
     return (
         <Box sx={{flexGrow: 1, width: "80%"}}>
@@ -156,7 +155,6 @@ const FriendAdd = () => {
                         variant="outlined"
                     >친구 추가
                     </Button>
-
                 </DialogContent>
             </Dialog>
         </Box>

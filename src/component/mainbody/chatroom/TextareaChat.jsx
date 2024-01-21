@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {useState} from 'react';
 import {Divider, IconButton, InputBase, Paper} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
@@ -23,8 +22,8 @@ const TextareaChat = () => {
         await inputChat(selectedChatRoomId, message)
             .then(() => {
                 setMessage('');
-            })
-    }
+            });
+    };
 
     return (
         <Paper

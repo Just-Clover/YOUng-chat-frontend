@@ -26,7 +26,6 @@ const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open'})
     }),
 );
 
-// eslint-disable-next-line react/prop-types
 const Header = ({open, handleDrawerOpen}) => {
     return (
         <AppBar position="fixed" open={open} sx={{bgcolor: '#9ccc65'}}>
@@ -59,7 +58,7 @@ const Header = ({open, handleDrawerOpen}) => {
                             '& span': {color: "#fff176"}, // Use nested selectors for styling
                         }}
                     >
-                        <span>YOU</span>ngChat 
+                        <span>YOU</span>ngChat
                     </Typography>
                 </Box>
             </Toolbar>

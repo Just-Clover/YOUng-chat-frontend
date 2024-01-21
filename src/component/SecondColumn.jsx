@@ -7,7 +7,6 @@ import {Friend} from "./category/Friend.jsx";
 import {Chat} from "./category/Chat.jsx";
 import {MyPage} from "./category/MyPage.jsx";
 
-// eslint-disable-next-line react/prop-types
 const SecondColumn = ({category}) => {
     const {username, profileImage, setUserId, setUsername, setProfileImage} = userStore();
 

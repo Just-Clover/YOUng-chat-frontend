@@ -4,7 +4,6 @@ import userStore from "../../store/user/UserStore.js";
 import {getProfile} from "../../api/user/userApi.js";
 import mainBodyStore from "../../store/main/MainBodyStore.js";
 
-// eslint-disable-next-line react/prop-types
 const Profile = () => {
     const {username, profileImage, email, setUsername, setProfileImage, setEmail} = userStore();
 

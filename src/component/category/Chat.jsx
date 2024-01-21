@@ -11,7 +11,6 @@ export const Chat = () => {
     const {setMainBody} = mainBodyStore();
     const {chatRoom, setChatRoom} = chatRoomStore();
     const {setSelectedChatRoomId, setSelectedChatRoomTitle} = selectedChatRoomStore();
-    // const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => {
