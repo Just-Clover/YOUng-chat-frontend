@@ -55,7 +55,7 @@ OtherUserMessage.propTypes = {
         isDeleted: PropTypes.bool,
     }),
     showAvatarAndName: PropTypes.bool,
-}
+};
 
 const MyMessage = ({chat, onOpenDeleteDialog}) => {
 
