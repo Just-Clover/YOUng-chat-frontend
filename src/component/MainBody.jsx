@@ -28,7 +28,7 @@ const MainBody = () => {
             default:
                 return null;
         }
-    }
+    };
 
     return (
         <Box

@@ -84,7 +84,7 @@ const Sidebar = ({setCategory, open, handleDrawerClose}) => {
             window.location.href = "/";
             deleteToken();
         });
-    }
+    };
 
     return (
         <Drawer variant="permanent" open={open}>
