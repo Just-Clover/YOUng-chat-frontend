@@ -19,7 +19,10 @@ const TextareaChat = () => {
         if (message.trim() === '') {
             return; // 빈 메시지는 전송하지 않음
         }
-        await inputChat(selectedChatRoomId, message)
+        const chatMessage = {
+            message: String(message)
+        };
+        await inputChat(selectedChatRoomId, chatMessage)
             .then(() => {
                 setMessage('');
             });
