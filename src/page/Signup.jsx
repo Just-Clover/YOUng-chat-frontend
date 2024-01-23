@@ -72,6 +72,7 @@ const Signup = () => {
             for (let i = 0; i < response.length; i++) {
                 alert(response[i].message);
             }
+            setSignupLoading(false);
         });
     };
 
