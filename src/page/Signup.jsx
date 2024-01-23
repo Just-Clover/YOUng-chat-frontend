@@ -60,9 +60,12 @@ const Signup = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        await signup(user).then(() => {
-            alert("회원가입을 축하드립니다!");
-            navigate("/login");
+        await signup(user).then((response) => {
+            console.log(response.data);
+            if (response.data.code === 200) {
+                alert("회원가입을 축하드립니다!");
+                navigate("/login");
+            }
         })
     };
 
@@ -91,6 +94,7 @@ const Signup = () => {
                                 id="username"
                                 label="Username"
                                 name="username"
+                                helperText="사용자 이름은 영소문자, 한글, 숫자 4 - 10글자 입니다."
                                 value={user.username}
                                 autoComplete="username"
                                 autoFocus
@@ -158,6 +162,7 @@ const Signup = () => {
                                 id="password"
                                 label="Password"
                                 name="password"
+                                helperText="비밀번호는 영소문자, 숫자, 특수문자를 포함한 8글자 - 15글자 입니다."
                                 value={user.password}
                                 type="password"
                                 autoComplete="password"
