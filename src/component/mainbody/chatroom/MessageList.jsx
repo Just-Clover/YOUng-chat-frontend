@@ -34,7 +34,7 @@ const OtherUserMessage = ({chat, showAvatarAndName}) => {
                 <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
                     <Paper sx={{p: 1, bgcolor: '#b3e5fc', borderRadius: '10px', mr: 1}}>
                         <Typography variant="body1">
-                            {chat.isDeleted ? '삭제된 메세지입니다.' : chat.message}
+                            {chat.deleted ? '삭제된 메세지입니다.' : chat.message}
                         </Typography>
                     </Paper>
                     <Typography minWidth="20%" variant="caption">
@@ -52,7 +52,7 @@ OtherUserMessage.propTypes = {
         username: PropTypes.string,
         message: PropTypes.string,
         messageTime: PropTypes.string,
-        isDeleted: PropTypes.bool,
+        deleted: PropTypes.bool,
     }),
     showAvatarAndName: PropTypes.bool,
 };
@@ -60,14 +60,14 @@ OtherUserMessage.propTypes = {
 const MyMessage = ({chat, onOpenDeleteDialog}) => {
 
     return (
-        <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', mb: 2, maxWidth: '100%' }}>
+        <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', mb: 2, maxWidth: '100%'}}>
             <Typography minWidth="20%" textAlign="right" variant="caption">
                 {formatDate(chat.messageTime)}
             </Typography>
             <Paper sx={{p: 1, bgcolor: '#f0f4c3', borderRadius: '10px', ml: 1, cursor: 'pointer'}}
                    onClick={onOpenDeleteDialog}>
                 <Typography variant="body1">
-                    {chat.isDeleted ? '삭제된 메세지입니다.' : chat.message}
+                    {chat.deleted ? '삭제된 메세지입니다.' : chat.message}
                 </Typography>
             </Paper>
         </Box>
@@ -78,7 +78,7 @@ MyMessage.propTypes = {
     chat: PropTypes.shape({
         message: PropTypes.string,
         messageTime: PropTypes.string,
-        isDeleted: PropTypes.bool,
+        deleted: PropTypes.bool,
     }),
     onOpenDeleteDialog: PropTypes.func
 };
@@ -116,7 +116,7 @@ const MessageList = () => {
 
     const updateMessagesAfterDelete = () => {
         const updatedMessages = messages.map(message =>
-            message.chatId === messageToDelete.chatId ? {...message, isDeleted: true} : message
+            message.chatId === messageToDelete.chatId ? {...message, deleted: true} : message
         );
         setMessages(updatedMessages);
     };
