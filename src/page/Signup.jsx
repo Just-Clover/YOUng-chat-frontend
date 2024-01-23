@@ -23,6 +23,7 @@ const Signup = () => {
         password: '',
         code: ''
     });
+    const [signupLoading, setSignupLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
@@ -57,13 +58,15 @@ const Signup = () => {
         setOpen(false);
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
+        setSignupLoading(true);
         event.preventDefault();
-        await signup(user).then((response) => {
+        signup(user).then((response) => {
             if (response.data.code === 0) {
                 alert("회원가입을 축하드립니다!");
                 navigate("/login");
             }
+            setSignupLoading(false);
         }).catch((error) => {
             const response = error.response.data.data;
             for (let i = 0; i < response.length; i++) {
@@ -176,6 +179,7 @@ const Signup = () => {
                     <Button
                         type="submit"
                         fullWidth
+                        disabled={signupLoading}
                         onClick={handleSubmit}
                         variant="contained"
                         sx={{mt: 3, mb: 2, bgcolor: '#9ccc65'}}
@@ -192,6 +196,6 @@ const Signup = () => {
             <Footer/>
         </Container>
     );
-}
+};
 
 export default Signup;
