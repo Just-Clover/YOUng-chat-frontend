@@ -19,6 +19,4 @@ export async function handleError(error) {
         .find(error => error.code === code)
         .message
     alert(message);
-    window.localStorage.clear();
-    window.location.href = "/login";
 }
