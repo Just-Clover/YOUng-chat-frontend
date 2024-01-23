@@ -66,7 +66,7 @@ const EditProfile = () => {
                             type="file"
                             ref={fileInputRef}
                             style={{display: 'none'}}
-                            accept="image/png"
+                            accept="image/png, image/jpeg"
                             onChange={handleImageChange}
                         />
                         <Badge
