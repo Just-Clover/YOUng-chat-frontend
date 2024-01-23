@@ -13,7 +13,6 @@ const Main = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-
         const token = getCookie("RefreshToken");
         if (!token) {
             deleteToken();
