@@ -10,7 +10,7 @@ function createInstance(url) {
             "Content-Type": "application/json",
         }
     });
-    return setInterceptors(instance);
+    return instance;
 }
 
 function createAuthInstance(url) {

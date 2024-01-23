@@ -49,9 +49,8 @@ const Signup = () => {
             return;
         }
         setOpen(true);
-        await mailSend(user.email).then(() => {
-            alert("이메일에 코드가 전송되었습니다.")
-        });
+        alert("이메일에 코드가 전송되었습니다.")
+        await mailSend(user.email);
     };
 
     const handleClose = () => {
@@ -61,12 +60,16 @@ const Signup = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         await signup(user).then((response) => {
-            console.log(response.data);
-            if (response.data.code === 200) {
+            if (response.data.code === 0) {
                 alert("회원가입을 축하드립니다!");
                 navigate("/login");
             }
-        })
+        }).catch((error) => {
+            const response = error.response.data.data;
+            for (let i = 0; i < response.length; i++) {
+                alert(response[i].message);
+            }
+        });
     };
 
     return (
@@ -162,7 +165,7 @@ const Signup = () => {
                                 id="password"
                                 label="Password"
                                 name="password"
-                                helperText="비밀번호는 영소문자, 숫자, 특수문자를 포함한 8글자 - 15글자 입니다."
+                                helperText="비밀번호는 영소문자, 숫자, 특수문자(@$!%*?&)를 포함한 8글자 - 15글자 입니다."
                                 value={user.password}
                                 type="password"
                                 autoComplete="password"

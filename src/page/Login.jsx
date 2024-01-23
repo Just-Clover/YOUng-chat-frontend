@@ -44,6 +44,7 @@ const Login = () => {
 
     useEffect(() => {
         deleteToken();
+        window.localStorage.clear();
     }, []);
 
     return (
