@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     Avatar,
     Box,
@@ -16,6 +16,7 @@ import {getDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
 import userStore from "../../../store/user/UserStore.js";
 import PropTypes from "prop-types";
 import {deleteChat} from "../../../api/chat/chatApi.js";
+import {addFriend} from "../../../api/friend/friendApi.js";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -24,10 +25,34 @@ const formatDate = (dateString) => {
 };
 
 const OtherUserMessage = ({chat, showAvatarAndName}) => {
+    const [openProfileDialog, setOpenProfileDialog] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
+
+    const handleOpenProfileDialog = (chat) => {
+        setSelectedUser({
+            userId: chat.userId,
+            username: chat.username,
+            profileImage: chat.profileImage
+        });
+        setOpenProfileDialog(true);
+    };
+
+    const handleCloseProfileDialog = () => {
+        setOpenProfileDialog(false);
+    };
+
+    const handleAddFriend = () => {
+        addFriend(selectedUser.userId).then(() => {
+            alert("친구 추가 되었습니다.");
+            window.location.reload();
+        });
+    };
+
     return (
         <Box sx={{display: 'flex', alignItems: 'start', mb: 2}}>
             <Box sx={{minWidth: 32, height: 32, mr: 1}}>
-                {showAvatarAndName && <Avatar src={chat.profileImage} sx={{width: 30, height: 30}}></Avatar>}
+                {showAvatarAndName && <Avatar src={chat.profileImage} sx={{width: 30, height: 30}}
+                                              onClick={() => handleOpenProfileDialog(chat)}></Avatar>}
             </Box>
             <Box sx={{display: 'flex', flexDirection: 'column', mr: 1}}>
                 {showAvatarAndName && <Typography variant="caption" sx={{mb: 0.5}}>{chat.username}</Typography>}
@@ -42,12 +67,54 @@ const OtherUserMessage = ({chat, showAvatarAndName}) => {
                     </Typography>
                 </Box>
             </Box>
+            <Dialog
+                open={openProfileDialog}
+                onClose={handleCloseProfileDialog}
+                maxWidth='xs'
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogContent>
+                    {selectedUser && (<>
+                            <Avatar
+                                src={selectedUser.profileImage}
+                                sx={{
+                                    mt: 5,
+                                    mb: 5,
+                                    width: 300,
+                                    height: 300
+                                }}/>
+                            <Typography
+                                component="h1"
+                                variant="h4"
+                                sx={{
+                                    fontWeight: 'bold',
+                                    mb: 2,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center'
+                                }}>
+                                {selectedUser.username}
+                            </Typography>
+                            <Button
+                                sx={{mt: 2}}
+                                fullWidth
+                                size="large"
+                                onClick={handleAddFriend}
+                                variant="outlined"
+                            >친구 추가
+                            </Button>
+                        </>
+                    )}
+                </DialogContent>
+            </Dialog>
         </Box>
     );
 };
 
 OtherUserMessage.propTypes = {
     chat: PropTypes.shape({
+        userId: PropTypes.any,
         profileImage: PropTypes.string,
         username: PropTypes.string,
         message: PropTypes.string,
@@ -85,7 +152,7 @@ MyMessage.propTypes = {
 
 const MessageList = () => {
     const [messages, setMessages] = useState([]);
-    const [openDialog, setOpenDialog] = useState(false);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [messageToDelete, setMessageToDelete] = useState(null);
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {userId} = userStore();
@@ -93,7 +160,7 @@ const MessageList = () => {
 
     const handleOpenDeleteDialog = (message) => {
         setMessageToDelete(message);
-        setOpenDialog(true);
+        setOpenDeleteDialog(true);
     };
 
     const handleConfirmDelete = async () => {
@@ -101,11 +168,11 @@ const MessageList = () => {
             await deleteChat(selectedChatRoomId, messageToDelete.chatId);
             updateMessagesAfterDelete();
         }
-        setOpenDialog(false);
+        setOpenDeleteDialog(false);
     };
 
     const handleCloseDeleteDialog = () => {
-        setOpenDialog(false);
+        setOpenDeleteDialog(false);
     };
 
     const scrollToBottom = () => {
@@ -166,7 +233,7 @@ const MessageList = () => {
             ))}
             <div ref={messagesEndRef}/>
 
-            <Dialog open={openDialog} onClose={handleCloseDeleteDialog}>
+            <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
                 <DialogTitle id="alert-dialog-title">{"메시지를 삭제하시겠습니까?"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
