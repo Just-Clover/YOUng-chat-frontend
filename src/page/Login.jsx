@@ -96,7 +96,7 @@ const Login = () => {
                         fullWidth
                         onClick={handleLogin}
                         variant="contained"
-                        sx={{mt: 3, mb: 2, bgcolor: '#3f9df9'}}
+                        sx={{mt: 3, mb: 2, bgcolor: '#9ccc65'}}
                     >
                         Login
                     </Button>
