@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import {codeCheck, mailSend, signup} from "../api/user/userApi.js";
+import {codeCheck, existsEmail, mailSend, signup} from "../api/user/userApi.js";
 import {Dialog, DialogContent, DialogTitle} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import Footer from "../component/Footer.jsx";
@@ -49,9 +49,13 @@ const Signup = () => {
             alert("이메일 형식이 올바르지 않습니다.");
             return;
         }
-        setOpen(true);
-        alert("이메일에 코드가 전송되었습니다.")
-        await mailSend(user.email);
+        if (existsEmail(user.email)) {
+            alert("이미 존재하는 이메일 입니다.");
+        } else {
+            setOpen(true);
+            alert("이메일에 코드가 전송되었습니다.")
+            await mailSend(user.email);
+        }
     };
 
     const handleClose = () => {

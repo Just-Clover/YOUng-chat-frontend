@@ -21,6 +21,14 @@ export const login = (userData) => {
     return noAuthInstance.post("/users/login", userData);
 }
 
+export const existsEmail = (email) => {
+    return user.get("/users/signup/email", {
+        headers: {
+            "Email": email
+        }
+    });
+}
+
 export const getProfile = (userId) => {
     return user.get("/profile", {params: {userId: userId}});
 }
@@ -44,6 +52,7 @@ export const editProfile = (userId, username, file) => {
         }
     });
 }
+
 export const editPassword = (userData) => {
     return user.patch("/password", userData);
 }
