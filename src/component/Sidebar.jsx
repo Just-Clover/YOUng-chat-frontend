@@ -16,6 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import mainBodyStore from "../store/main/MainBodyStore.js";
 import {logout} from "../api/user/userApi.js";
 import {deleteToken} from "../api/common/cookie.js";
+import {useNavigate} from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -71,6 +72,7 @@ const Sidebar = ({setCategory, open, handleDrawerClose}) => {
         setCategory(item.value);
     }
     const {setMainBody} = mainBodyStore();
+    const navigate = useNavigate();
 
     const list = [
         {icon: <PersonIcon/>, text: 'Friend', value: 'friend'},
@@ -82,8 +84,8 @@ const Sidebar = ({setCategory, open, handleDrawerClose}) => {
         logout().then(() => {
             alert("로그아웃을 성공하였습니다.");
             window.localStorage.clear();
-            window.location.href = "/";
             deleteToken();
+            navigate("/", {replace : true});
         });
     };
 
