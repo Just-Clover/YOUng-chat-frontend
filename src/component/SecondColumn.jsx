@@ -6,10 +6,11 @@ import {getProfile} from "../api/user/userApi.js";
 import {Friend} from "./category/Friend.jsx";
 import {Chat} from "./category/Chat.jsx";
 import {MyPage} from "./category/MyPage.jsx";
+import categoryStore from "../store/category/CategoryStore.js";
 
-const SecondColumn = ({category}) => {
+const SecondColumn = () => {
     const {username, profileImage, setUserId, setUsername, setProfileImage} = userStore();
-
+    const {category} = categoryStore();
     useEffect(() => {
         getProfile().then((response) => {
             setUserId(response.data.data["userId"]);
