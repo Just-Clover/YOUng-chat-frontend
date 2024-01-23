@@ -81,6 +81,7 @@ const Sidebar = ({setCategory, open, handleDrawerClose}) => {
     const handleLogout = () => {
         logout().then(() => {
             alert("로그아웃을 성공하였습니다.");
+            window.localStorage.clear();
             window.location.href = "/";
             deleteToken();
         });
@@ -96,7 +97,8 @@ const Sidebar = ({setCategory, open, handleDrawerClose}) => {
             <Divider/>
             <List>
                 {list.map((item) => (
-                    <ListItem key={item.text} disablePadding sx={{display: 'block'}} onClick={() => setMainBody("null")}>
+                    <ListItem key={item.text} disablePadding sx={{display: 'block'}}
+                              onClick={() => setMainBody("null")}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,
