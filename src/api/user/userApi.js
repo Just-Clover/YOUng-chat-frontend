@@ -22,7 +22,7 @@ export const login = (userData) => {
 }
 
 export const existsEmail = (email) => {
-    return user.get("/users/signup/email", {
+    return noAuthInstance.get("/users/signup/email", {
         headers: {
             "Email": email
         }

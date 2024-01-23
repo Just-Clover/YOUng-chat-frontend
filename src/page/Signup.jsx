@@ -44,18 +44,22 @@ const Signup = () => {
             });
     };
 
-    const handleClickOpen = async () => {
+    const handleClickOpen = () => {
         if (!user.email.match(EMAIL_REGEX)) {
             alert("이메일 형식이 올바르지 않습니다.");
             return;
         }
-        if (existsEmail(user.email)) {
-            alert("이미 존재하는 이메일 입니다.");
-        } else {
-            setOpen(true);
-            alert("이메일에 코드가 전송되었습니다.")
-            await mailSend(user.email);
-        }
+        existsEmail(user.email).then((response) => {
+            if (response.data.data.duplicated) {
+                alert("이미 존재하는 이메일 입니다.");
+            } else {
+                setOpen(true);
+                alert("이메일에 코드가 전송되었습니다.")
+                mailSend(user.email);
+            }
+        })
+
+
     };
 
     const handleClose = () => {
