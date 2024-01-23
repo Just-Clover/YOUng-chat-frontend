@@ -10,6 +10,7 @@ export async function handleError(error) {
     if (error.response.status === 401) {
         console.log(401);
         deleteToken();
+        window.localStorage.clear();
         window.location.href = "/login";
         return;
     }
@@ -18,5 +19,6 @@ export async function handleError(error) {
         .find(error => error.code === code)
         .message
     alert(message);
+    window.localStorage.clear();
     window.location.href = "/login";
 }
