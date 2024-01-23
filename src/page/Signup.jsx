@@ -44,7 +44,7 @@ const Signup = () => {
             });
     };
 
-    const handleClickOpen = () => {
+    const handleClickOpen = async () => {
         if (!user.email.match(EMAIL_REGEX)) {
             alert("이메일 형식이 올바르지 않습니다.");
             return;

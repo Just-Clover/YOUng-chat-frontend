@@ -14,13 +14,16 @@ export const Chat = () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            getChatRoomList().then(response => {
-                setChatRoom(response.data.data);
-            });
+           handleGetChatRoomList();
         }, 1000); // 1초마다 실행
-
         return () => clearInterval(interval); // 컴포넌트 해제 시 인터벌 정지
     }, []);
+
+    const handleGetChatRoomList = () => {
+        getChatRoomList().then(response => {
+            setChatRoom(response.data.data);
+        });
+    };
 
     const chatRoomClick = (room) => {
         setMainBody('chatRoom');

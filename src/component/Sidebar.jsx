@@ -92,10 +92,10 @@ const Sidebar = ({open, handleDrawerClose}) => {
 
     const handleLogout = () => {
         logout().then(() => {
-            alert("로그아웃을 성공하였습니다.");
             window.localStorage.clear();
-            deleteToken();
             navigate("/login", {replace : true});
+            alert("로그아웃을 성공하였습니다.");
+            deleteToken();
         });
     };
 
