@@ -16,7 +16,6 @@ import {useNavigate} from "react-router-dom";
 
 const Login = () => {
     const navigate = useNavigate();
-
     const [user, setUser] = useState({
         email: '',
         password: '',
@@ -30,9 +29,9 @@ const Login = () => {
         }));
     };
 
-    const handleLogin = async (event) => {
+    const handleLogin = (event) => {
         event.preventDefault();
-        await login(user).then((response) => {
+        login(user).then((response) => {
             alert("로그인에 성공하였습니다!");
             const accessToken = response.headers.get("AccessToken");
             const refreshToken = response.headers.get("RefreshToken");

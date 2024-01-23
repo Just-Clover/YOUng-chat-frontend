@@ -79,9 +79,8 @@ const Sidebar = ({open, handleDrawerClose}) => {
         setCategory(item.value);
     }
     useEffect(() => {
-        const storedCategory = localStorage.getItem('category-store');
-        if (storedCategory.category) {
-            setCategory(storedCategory.category);
+        if (!category) {
+            setCategory("friend");
         }
     }, [category]);
 
@@ -96,7 +95,7 @@ const Sidebar = ({open, handleDrawerClose}) => {
             alert("로그아웃을 성공하였습니다.");
             window.localStorage.clear();
             deleteToken();
-            navigate("/", {replace : true});
+            navigate("/login", {replace : true});
         });
     };
 
