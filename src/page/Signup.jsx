@@ -101,7 +101,7 @@ const Signup = () => {
                                 id="username"
                                 label="Username"
                                 name="username"
-                                helperText="사용자 이름은 영소문자, 한글, 숫자 4 - 10글자 입니다."
+                                helperText="사용자 이름은 영소문자, 한글, 숫자 2 - 10글자 입니다."
                                 value={user.username}
                                 autoComplete="username"
                                 autoFocus
@@ -169,7 +169,7 @@ const Signup = () => {
                                 id="password"
                                 label="Password"
                                 name="password"
-                                helperText="비밀번호는 영소문자, 숫자, 특수문자(@$!%*?&)를 포함한 8글자 - 15글자 입니다."
+                                helperText="'비밀번호는 영소문자, 숫자, 특수문자(~!@#$%^&*()_-+=?)를 포함한 8글자 - 15글자 입니다.'"
                                 value={user.password}
                                 type="password"
                                 autoComplete="password"
