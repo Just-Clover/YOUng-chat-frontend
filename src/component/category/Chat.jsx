@@ -47,12 +47,21 @@ export const Chat = () => {
                     disablePadding
                     key={index}
                     divider
-                    onClick={() => chatRoomClick(room)}>
+                    onClick={() => chatRoomClick(room)}
+                    sx={{width: '100%'}}
+                >
                     <ListItemButton>
                         <ListItemText
+                            sx={{flex: 1, minWidth: 0}}
                             primary={
                                 <Typography
-                                    sx={{display: 'inline'}}
+                                    sx={{
+                                        display: 'block',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        width: '100%'
+                                    }}
                                     component="span"
                                     variant="h6"
                                     fontWeight="bold"
@@ -62,6 +71,13 @@ export const Chat = () => {
                             }
                             secondary={
                                 <Typography
+                                    sx={{
+                                        display: 'block',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        width: '100%'
+                                    }}
                                     component="span"
                                     variant="body2"
                                     color="gray"
