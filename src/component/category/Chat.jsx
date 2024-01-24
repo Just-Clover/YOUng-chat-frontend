@@ -6,6 +6,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
 import mainBodyStore from "../../store/main/MainBodyStore.js";
 import selectedChatRoomStore from "../../store/chat-room/SelectedChatRoomStore.js";
+import PropTypes from "prop-types";
 
 export const Chat = () => {
     const {setMainBody} = mainBodyStore();
@@ -14,7 +15,7 @@ export const Chat = () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-           handleGetChatRoomList();
+            handleGetChatRoomList();
         }, 1000); // 1초마다 실행
         return () => clearInterval(interval); // 컴포넌트 해제 시 인터벌 정지
     }, []);
@@ -65,7 +66,7 @@ export const Chat = () => {
                                     variant="body2"
                                     color="gray"
                                 >
-                                    {room.lastChat}
+                                    {room.lastChatDeleted ? '삭제된 메세지입니다' : room.lastChat}
                                 </Typography>
                             }
                         />
@@ -75,4 +76,13 @@ export const Chat = () => {
             ))}
         </List>
     )
+}
+
+Chat.propTypes = {
+    chatRoom: PropTypes.shape({
+        title: PropTypes.string,
+        lastChat: PropTypes.string,
+        lastChatTime: PropTypes.string,
+        lastChatDeleted: PropTypes.bool,
+    })
 }
