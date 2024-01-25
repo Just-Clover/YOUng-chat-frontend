@@ -61,7 +61,7 @@ const OtherUserMessage = ({chat, showAvatarAndName}) => {
                 {showAvatarAndName && <Typography variant="caption" sx={{mb: 0.5}}>{chat.username}</Typography>}
                 <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
                     <Paper sx={{p: 1, bgcolor: '#b3e5fc', borderRadius: '10px', mr: 1}}>
-                        <Typography variant="body1">
+                        <Typography variant="body1" sx={{wordBreak: 'break-word'}}>
                             {chat.deleted ? '삭제된 메세지입니다.' : chat.message}
                         </Typography>
                     </Paper>
@@ -135,7 +135,7 @@ const MyMessage = ({chat, onOpenDeleteDialog}) => {
             </Typography>
             <Paper sx={{p: 1, bgcolor: '#f0f4c3', borderRadius: '10px', ml: 1, cursor: 'pointer'}}
                    onClick={onOpenDeleteDialog}>
-                <Typography variant="body1">
+                <Typography variant="body1" sx={{wordBreak: 'break-word'}}>
                     {chat.deleted ? '삭제된 메세지입니다.' : chat.message}
                 </Typography>
             </Paper>
