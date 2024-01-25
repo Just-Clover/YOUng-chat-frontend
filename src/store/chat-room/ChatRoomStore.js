@@ -5,7 +5,7 @@ const chatRoomStore = create(persist(set => ({
     chatRoom: [],
     setChatRoom: (chatRoom) => set({chatRoom: chatRoom})
 }), {
-    name: "friend-store"
+    name: "chat-room-store"
 }));
 
 export default chatRoomStore;
