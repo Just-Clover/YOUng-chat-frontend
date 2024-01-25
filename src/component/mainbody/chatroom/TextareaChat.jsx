@@ -1,33 +1,52 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Divider, IconButton, InputBase, Paper} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
-import {inputChat} from "../../../api/chat/chatApi.js";
 import selectedChatRoomStore from "../../../store/chat-room/SelectedChatRoomStore.js";
+import stompStore from "../../../store/stomp/StompStore.js";
+import chatStore from "../../../store/chat/ChatStore.js";
+import userStore from "../../../store/user/UserStore.js";
+import {getDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
 
 
 const TextareaChat = () => {
-
-    const {selectedChatRoomId} = selectedChatRoomStore()
-
-    const [message, setMessage] = useState('');
+    const {userId} = userStore();
+    const {selectedChatRoomId} = selectedChatRoomStore();
+    const {stompClient} = stompStore();
+    const [chat, setChat] = useState('');
+    const {setMessages} = chatStore();
     const handleInputChange = (event) => {
-        setMessage(event.target.value);
+        setChat(event.target.value);
     };
+
+    useEffect(() => {
+        getDetailChatRoom(selectedChatRoomId).then((response) => {
+            const formattedMessages = formatMessages(response.data.data.chatResList);
+            setMessages(formattedMessages);
+        });
+    }, [setMessages]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (message.trim() === '') {
+        if (chat.trim() === '') {
             return; // 빈 메시지는 전송하지 않음
         }
-        const chatMessage = {
-            message: String(message)
-        };
-        await inputChat(selectedChatRoomId, chatMessage)
-            .then(() => {
-                setMessage('');
+        if (stompClient && chat) {
+            await stompClient.publish({
+                destination: `/pub/chat-rooms/` + selectedChatRoomId + `/chats`,
+                body: JSON.stringify({"message": chat, "userId": userId}),
             });
+            setChat('');
+            await getDetailChatRoom(selectedChatRoomId).then((response) => {
+                setMessages(formatMessages(response.data.data.chatResList));
+            });
+        }
     };
-
+    const formatMessages = (chatResList) => {
+        return chatResList.map((message, index, array) => ({
+            ...message,
+            showAvatarAndName: index === 0 || array[index - 1].userId !== message.userId
+        }));
+    };
     return (
         <Paper
             component="form"
@@ -38,7 +57,7 @@ const TextareaChat = () => {
                 sx={{ml: 1, flex: 1}}
                 placeholder="보낼 메세지를 입력해주세요"
                 inputProps={{'aria-label': 'message'}}
-                value={message}
+                value={chat}
                 onChange={handleInputChange}
             />
             <Divider sx={{height: 28, m: 0.5}} orientation="vertical"/>

@@ -6,19 +6,20 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
 import mainBodyStore from "../../store/main/MainBodyStore.js";
 import selectedChatRoomStore from "../../store/chat-room/SelectedChatRoomStore.js";
+import chatStore from "../../store/chat/ChatStore.js";
 import PropTypes from "prop-types";
+
 
 export const Chat = () => {
     const {setMainBody} = mainBodyStore();
     const {chatRoom, setChatRoom} = chatRoomStore();
+    const {messages} = chatStore();
     const {setSelectedChatRoomId, setSelectedChatRoomTitle} = selectedChatRoomStore();
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            handleGetChatRoomList();
-        }, 1000); // 1초마다 실행
-        return () => clearInterval(interval); // 컴포넌트 해제 시 인터벌 정지
-    }, []);
+        handleGetChatRoomList();
+    }, [messages]);
+
 
     const handleGetChatRoomList = () => {
         getChatRoomList().then(response => {

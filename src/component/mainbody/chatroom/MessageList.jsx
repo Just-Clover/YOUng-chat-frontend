@@ -17,10 +17,13 @@ import userStore from "../../../store/user/UserStore.js";
 import PropTypes from "prop-types";
 import {deleteChat} from "../../../api/chat/chatApi.js";
 import {addFriend} from "../../../api/friend/friendApi.js";
+import * as StompJs from "@stomp/stompjs";
+import {getCookie} from "../../../api/common/cookie.js";
+import stompStore from "../../../store/stomp/StompStore.js";
+import chatStore from "../../../store/chat/ChatStore.js";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
-    // return `${date.getHours()}:${date.getMinutes()}`;
     return date.toTimeString().split(' ')[0];
 };
 
@@ -125,7 +128,6 @@ OtherUserMessage.propTypes = {
 };
 
 const MyMessage = ({chat, onOpenDeleteDialog}) => {
-
     return (
         <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', mb: 2, maxWidth: '100%'}}>
             <Typography minWidth="20%" textAlign="right" variant="caption">
@@ -151,12 +153,13 @@ MyMessage.propTypes = {
 };
 
 const MessageList = () => {
-    const [messages, setMessages] = useState([]);
+    const {messages, setMessages} = chatStore();
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [messageToDelete, setMessageToDelete] = useState(null);
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {userId} = userStore();
     const messagesEndRef = useRef(null);
+    const {setStompClient} = stompStore();
 
     const handleOpenDeleteDialog = (message) => {
         setMessageToDelete(message);
@@ -187,35 +190,45 @@ const MessageList = () => {
         );
         setMessages(updatedMessages);
     };
+    const fetchInitialMessages = async () => {
+        if (!selectedChatRoomId) return;
+        const response = await getDetailChatRoom(selectedChatRoomId);
+        const formattedMessages = formatMessages(response.data.data.chatResList);
+        setMessages(formattedMessages);
+        scrollToBottom();
+    };
 
     useEffect(() => {
-        // 채팅방 ID가 변경될 때 초기 메시지를 불러오는 함수
-        const fetchInitialMessages = async () => {
-            if (!selectedChatRoomId) return;
-            const response = await getDetailChatRoom(selectedChatRoomId);
-            const formattedMessages = formatMessages(response.data.data.chatResList);
-            setMessages(formattedMessages);
-            scrollToBottom();
-        };
         fetchInitialMessages();
-    }, [selectedChatRoomId]);
+        const client = new StompJs.Client({
+            brokerURL: import.meta.env.VITE_SOCKET_ROOT,
+            reconnectDelay: 5000,
+            onConnect: () => {
+                console.log("WebSocket connected successfully");
+                client.subscribe(`/sub/chat-rooms/` + selectedChatRoomId + `/chats`, (message) => {
+                    scrollToBottom();
+                    const chats = messages;
+                    chats.push(JSON.parse(message.body).data);
+                    setMessages(formatMessages(chats));
+                });
+            },
+            connectHeaders: {
+                AccessToken: getCookie("AccessToken"),
+            },
+            onStompError: (frame) => {
+                console.error("WebSocket error:", frame);
+            },
+            onDisconnect: () => {
+                console.log("WebSocket disconnected");
+            },
+        });
 
-    useEffect(() => {
-        const fetchMessages = async () => {
-            if (!selectedChatRoomId) return [];
-            const response = await getDetailChatRoom(selectedChatRoomId);
-            return formatMessages(response.data.data.chatResList);
-        };
+        client.activate();
+        setStompClient(client);
+        return () => {
 
-        const pollingInterval = setInterval(async () => {
-            const newMessages = await fetchMessages();
-            if (JSON.stringify(newMessages) !== JSON.stringify(messages)) {
-                setMessages(newMessages);
-                scrollToBottom();
-            }
-        }, 1000);
-        return () => clearInterval(pollingInterval);
-    }, [selectedChatRoomId, messages]);
+        }
+    }, [selectedChatRoomId, setMessages]);
 
     const formatMessages = (chatResList) => {
         return chatResList.map((message, index, array) => ({
