@@ -17,10 +17,10 @@ import userStore from "../../../store/user/UserStore.js";
 import PropTypes from "prop-types";
 import {deleteChat} from "../../../api/chat/chatApi.js";
 import {addFriend} from "../../../api/friend/friendApi.js";
-import * as StompJs from "@stomp/stompjs";
-import {getCookie} from "../../../api/common/cookie.js";
 import stompStore from "../../../store/stomp/StompStore.js";
 import chatStore from "../../../store/chat/ChatStore.js";
+import * as StompJs from "@stomp/stompjs";
+import {getCookie} from "../../../api/common/cookie.js";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -181,7 +181,7 @@ const MessageList = () => {
     const scrollToBottom = () => {
         setTimeout(() => {
             messagesEndRef.current?.scrollIntoView({behavior: "smooth"});
-        }, 100);
+        }, 10);
     };
 
     const updateMessagesAfterDelete = () => {
@@ -199,16 +199,27 @@ const MessageList = () => {
     };
 
     useEffect(() => {
-        fetchInitialMessages();
+        fetchInitialMessages().then(() => {
+            scrollToBottom();
+        });
         const client = new StompJs.Client({
             brokerURL: import.meta.env.VITE_SOCKET_ROOT,
             reconnectDelay: 5000,
             onConnect: () => {
                 console.log("WebSocket connected successfully");
-                client.subscribe(`/sub/chat-rooms/` + selectedChatRoomId + `/chats`, (message) => {
+                client.subscribe(`/exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, (message) => {
                     scrollToBottom();
                     const chats = messages;
-                    chats.push(JSON.parse(message.body).data);
+                    const messageData = JSON.parse(message.body);
+
+                    const { messageTime } = messageData;
+                    const [year, month, day, hour, minute, second, millisecond] = messageTime;
+                    const messageDate = new Date(year, month - 1, day, hour, minute, second, millisecond);
+
+                    messageData.messageTime = messageDate.toISOString();
+
+                    chats.push(messageData);
+
                     setMessages(formatMessages(chats));
                 });
             },
@@ -222,12 +233,9 @@ const MessageList = () => {
                 console.log("WebSocket disconnected");
             },
         });
-
         client.activate();
         setStompClient(client);
-        return () => {
-
-        }
+        return () => {}
     }, [selectedChatRoomId, setMessages]);
 
     const formatMessages = (chatResList) => {

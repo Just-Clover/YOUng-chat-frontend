@@ -13,7 +13,7 @@ const TextareaChat = () => {
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {stompClient} = stompStore();
     const [chat, setChat] = useState('');
-    const {setMessages} = chatStore();
+    const {setMessages, messages} = chatStore();
     const handleInputChange = (event) => {
         setChat(event.target.value);
     };
@@ -23,7 +23,7 @@ const TextareaChat = () => {
             const formattedMessages = formatMessages(response.data.data.chatResList);
             setMessages(formattedMessages);
         });
-    }, [setMessages]);
+    }, [setMessages, setChat]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -32,7 +32,7 @@ const TextareaChat = () => {
         }
         if (stompClient && chat) {
             await stompClient.publish({
-                destination: `/pub/chat-rooms/` + selectedChatRoomId + `/chats`,
+                destination: `/pub/chat-rooms.` + selectedChatRoomId,
                 body: JSON.stringify({"message": chat, "userId": userId}),
             });
             setChat('');
