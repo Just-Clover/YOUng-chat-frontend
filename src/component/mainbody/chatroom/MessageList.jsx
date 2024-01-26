@@ -207,12 +207,12 @@ const MessageList = () => {
             reconnectDelay: 5000,
             onConnect: () => {
                 console.log("WebSocket connected successfully");
-                client.subscribe(`/exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, (message) => {
+                client.subscribe(`exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, (message) => {
                     scrollToBottom();
                     const chats = messages;
                     const messageData = JSON.parse(message.body);
 
-                    const { messageTime } = messageData;
+                    const {messageTime} = messageData;
                     const [year, month, day, hour, minute, second, millisecond] = messageTime;
                     const messageDate = new Date(year, month - 1, day, hour, minute, second, millisecond);
 
@@ -235,7 +235,8 @@ const MessageList = () => {
         });
         client.activate();
         setStompClient(client);
-        return () => {}
+        return () => {
+        }
     }, [selectedChatRoomId, setMessages]);
 
     const formatMessages = (chatResList) => {
