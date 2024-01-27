@@ -207,7 +207,7 @@ const MessageList = () => {
             reconnectDelay: 5000,
             onConnect: () => {
                 console.log("WebSocket connected successfully");
-                client.subscribe(`/exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, (message) => {
+                client.subscribe(`exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, (message) => {
                     scrollToBottom();
                     const chats = messages;
                     const messageData = JSON.parse(message.body);
