@@ -3,10 +3,11 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import selectedChatRoomStore from "../../../store/chat-room/SelectedChatRoomStore.js";
 import EditNoteSharpIcon from '@mui/icons-material/EditNoteSharp';
 import TextField from "@mui/material/TextField";
-import {editChatRoom, leaveChatRoom} from "../../../api/chat-room/chatRoomApi.js";
+import {editChatRoom, getChatRoomList, leaveChatRoom} from "../../../api/chat-room/chatRoomApi.js";
 import IconButton from "@mui/material/IconButton";
 import {useEffect, useState} from "react";
 import mainBodyStore from "../../../store/main/MainBodyStore.js";
+import chatRoomStore from "../../../store/chat-room/ChatRoomStore.js";
 
 const ChatHeader = () => {
     const {selectedChatRoomId, setSelectedChatRoomId, selectedChatRoomTitle, setSelectedChatRoomTitle} = selectedChatRoomStore();
@@ -14,6 +15,7 @@ const ChatHeader = () => {
     const [titleOpen, setTitleOpen] = useState(false);
     const [leaveOpen, setLeaveOpen] = useState(false);
     const {setMainBody} = mainBodyStore();
+    const {setChatRoom} = chatRoomStore();
 
     const handleTitleClose = () => {
         setTitleOpen(false);
@@ -45,6 +47,9 @@ const ChatHeader = () => {
         leaveChatRoom(selectedChatRoomId).then(() => {
             alert("채팅방을 나갔습니다.");
             setLeaveOpen(false);
+            getChatRoomList().then(response => {
+                setChatRoom(response.data.data);
+            });
             setSelectedChatRoomId(null);
             setMainBody("");
         })
