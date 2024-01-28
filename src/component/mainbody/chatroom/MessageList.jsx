@@ -206,12 +206,10 @@ const MessageList = () => {
             reconnectDelay: 5000,
             onConnect: () => {
                 console.log("WebSocket connected successfully");
-                client.subscribe(`/exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, (message) => {
-                    const chats = messages;
-                    const messageData = JSON.parse(message.body);
-                    chats.push(messageData);
-                    setMessages(formatMessages(chats));
-                    scrollToBottom();
+                client.subscribe(`/exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, () => {
+                    fetchInitialMessages().then(() => {
+                        scrollToBottom();
+                    });
                 });
             },
             connectHeaders: {
@@ -226,7 +224,7 @@ const MessageList = () => {
         });
         client.activate();
         setStompClient(client);
-        return () => {}
+        return () => {client.deactivate();}
     }, [selectedChatRoomId, setMessages]);
 
     const formatMessages = (chatResList) => {
