@@ -17,7 +17,11 @@ export const Chat = () => {
     const {setSelectedChatRoomId, setSelectedChatRoomTitle} = selectedChatRoomStore();
 
     useEffect(() => {
-        handleGetChatRoomList();
+        const interval = setInterval(() => {
+            handleGetChatRoomList();
+        }, 1000); // 1초마다 실행
+
+        return () => clearInterval(interval); // 컴포넌트 해
     }, [messages]);
 
 
