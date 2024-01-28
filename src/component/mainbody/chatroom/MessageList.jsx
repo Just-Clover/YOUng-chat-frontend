@@ -12,7 +12,7 @@ import {
     Typography
 } from "@mui/material";
 import selectedChatRoomStore from "../../../store/chat-room/SelectedChatRoomStore.js";
-import {getDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
+import {getChatRoomList, getDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
 import userStore from "../../../store/user/UserStore.js";
 import PropTypes from "prop-types";
 import {deleteChat} from "../../../api/chat/chatApi.js";
@@ -21,6 +21,7 @@ import stompStore from "../../../store/stomp/StompStore.js";
 import chatStore from "../../../store/chat/ChatStore.js";
 import * as StompJs from "@stomp/stompjs";
 import {getCookie} from "../../../api/common/cookie.js";
+import chatRoomStore from "../../../store/chat-room/ChatRoomStore.js";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -160,7 +161,7 @@ const MessageList = () => {
     const {userId} = userStore();
     const messagesEndRef = useRef(null);
     const {setStompClient} = stompStore();
-
+    const {setChatRoom} = chatRoomStore();
     const handleOpenDeleteDialog = (message) => {
         setMessageToDelete(message);
         setOpenDeleteDialog(true);
@@ -211,6 +212,12 @@ const MessageList = () => {
                         scrollToBottom();
                     });
                 });
+
+                client.subscribe(`/exchange/chat.exchange/users.` + userId, () => {
+                    getChatRoomList().then(response => {
+                        setChatRoom(response.data.data);
+                    });
+                });
             },
             connectHeaders: {
                 AccessToken: getCookie("AccessToken"),
@@ -224,7 +231,7 @@ const MessageList = () => {
         });
         client.activate();
         setStompClient(client);
-        return () => {client.deactivate();}
+        return () => {client.deactivate().then(() => console.log());}
     }, [selectedChatRoomId, setMessages]);
 
     const formatMessages = (chatResList) => {
