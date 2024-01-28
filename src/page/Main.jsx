@@ -13,7 +13,7 @@ const Main = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = getCookie("RefreshToken");
+        const token = getCookie("AccessToken");
         if (!token) {
             deleteToken();
             navigate("/login", {replace : true});
