@@ -13,14 +13,15 @@ const TextareaChat = () => {
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {stompClient} = stompStore();
     const [chat, setChat] = useState('');
-    const {setMessages, messages} = chatStore();
+    const {setMessages} = chatStore();
     const handleInputChange = (event) => {
         setChat(event.target.value);
     };
 
     useEffect(() => {
         getDetailChatRoom(selectedChatRoomId).then((response) => {
-            const formattedMessages = formatMessages(response.data.data.chatResList);
+            const {chatResList} = response.data.data;
+            const formattedMessages = formatMessages(chatResList);
             setMessages(formattedMessages);
         });
     }, [setMessages, setChat]);
@@ -36,9 +37,6 @@ const TextareaChat = () => {
                 body: JSON.stringify({"message": chat, "userId": userId}),
             });
             setChat('');
-            await getDetailChatRoom(selectedChatRoomId).then((response) => {
-                setMessages(formatMessages(response.data.data.chatResList));
-            });
         }
     };
     const formatMessages = (chatResList) => {

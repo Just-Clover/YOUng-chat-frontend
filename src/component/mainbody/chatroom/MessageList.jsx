@@ -195,7 +195,6 @@ const MessageList = () => {
         const response = await getDetailChatRoom(selectedChatRoomId);
         const formattedMessages = formatMessages(response.data.data.chatResList);
         setMessages(formattedMessages);
-        scrollToBottom();
     };
 
     useEffect(() => {
@@ -207,20 +206,12 @@ const MessageList = () => {
             reconnectDelay: 5000,
             onConnect: () => {
                 console.log("WebSocket connected successfully");
-                client.subscribe(`exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, (message) => {
-                    scrollToBottom();
+                client.subscribe(`/exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, (message) => {
                     const chats = messages;
                     const messageData = JSON.parse(message.body);
-
-                    const { messageTime } = messageData;
-                    const [year, month, day, hour, minute, second, millisecond] = messageTime;
-                    const messageDate = new Date(year, month - 1, day, hour, minute, second, millisecond);
-
-                    messageData.messageTime = messageDate.toISOString();
-
                     chats.push(messageData);
-
                     setMessages(formatMessages(chats));
+                    scrollToBottom();
                 });
             },
             connectHeaders: {
