@@ -8,6 +8,7 @@ import mainBodyStore from "../../store/main/MainBodyStore.js";
 import selectedChatRoomStore from "../../store/chat-room/SelectedChatRoomStore.js";
 import chatStore from "../../store/chat/ChatStore.js";
 import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
 
 
 export const Chat = () => {
@@ -33,64 +34,66 @@ export const Chat = () => {
     };
 
     return (
-        <List component="nav" aria-label="mailbox folders" sx={{ml: 2}}>
-            <Typography variant="h6"
-                        sx={{
-                            fontWeight: 'bold',
-                            mb: 2
-                        }}>
+        <List component="nav" aria-label="mailbox folders" sx={{
+            ml: 2, height: "100%", display: "flex", flexDirection: "column"
+        }}>
+            <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>
                 Chat
             </Typography>
             <Divider/>
-            {chatRoom.map((room, index) => (
-                <ListItem
-                    disablePadding
-                    key={index}
-                    divider
-                    onClick={() => chatRoomClick(room)}
-                    sx={{width: '100%'}}
-                >
-                    <ListItemButton>
-                        <ListItemText
-                            sx={{flex: 1, minWidth: 0}}
-                            primary={
-                                <Typography
-                                    sx={{
-                                        display: 'block',
-                                        whiteSpace: 'nowrap',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        width: '100%'
-                                    }}
-                                    component="span"
-                                    variant="h6"
-                                    fontWeight="bold"
-                                >
-                                    {room.title}<br/>
-                                </Typography>
-                            }
-                            secondary={
-                                <Typography
-                                    sx={{
-                                        display: 'block',
-                                        whiteSpace: 'nowrap',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        width: '100%'
-                                    }}
-                                    component="span"
-                                    variant="body2"
-                                    color="gray"
-                                >
-                                    {room.lastChatDeleted ? '삭제된 메세지입니다' : room.lastChat}
-                                </Typography>
-                            }
-                        />
-                    </ListItemButton>
-                    <Divider/>
-                </ListItem>
-            ))}
+            <Box sx={{overflowY: "auto", maxHeight: "70vh"}}>
+                {chatRoom.map((room, index) => (
+                    <ListItem
+                        disablePadding
+                        key={index}
+                        divider
+                        onClick={() => chatRoomClick(room)}
+                        sx={{width: '100%'}}
+                    >
+                        <ListItemButton>
+                            <ListItemText
+                                sx={{flex: 1, minWidth: 0}}
+                                primary={
+                                    <Typography
+                                        sx={{
+                                            display: 'block',
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            width: '100%'
+                                        }}
+                                        component="span"
+                                        variant="h6"
+                                        fontWeight="bold"
+                                    >
+                                        {room.title}<br/>
+                                    </Typography>
+                                }
+                                secondary={
+                                    <Typography
+                                        sx={{
+                                            display: 'block',
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            width: '100%'
+                                        }}
+                                        component="span"
+                                        variant="body2"
+                                        color="gray"
+                                    >
+                                        {room.lastChatDeleted ? '삭제된 메세지입니다' : room.lastChat}
+                                    </Typography>
+                                }
+                            />
+                        </ListItemButton>
+                        <Divider/>
+                    </ListItem>
+                ))}
+
+            </Box>
         </List>
+
     )
 }
 

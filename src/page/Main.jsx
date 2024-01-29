@@ -47,7 +47,9 @@ const Main = () => {
     const handleClose = (event, reason) => {
         if (reason === 'timeout') {
             setSnackOpen(false);
+            return;
         }
+        setSnackOpen(false);
     };
 
     useEffect(() => {
