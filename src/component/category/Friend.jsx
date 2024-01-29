@@ -104,7 +104,21 @@ export const Friend = () => {
                                 />
                             </ListItemAvatar>
                             <ListItemText
-                                primary={friend.username}/>
+                                primary={
+                                    <Typography
+                                        sx={{
+                                            display: 'block',
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            width: '100%'
+                                        }}
+                                        component="span"
+                                    >
+                                        {friend.username}
+                                    </Typography>
+                                }
+                            />
                         </ListItemButton>
                     </ListItem>
                 ))}
