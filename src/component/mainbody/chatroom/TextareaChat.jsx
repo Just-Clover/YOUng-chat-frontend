@@ -1,11 +1,10 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Divider, IconButton, InputBase, Paper} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import selectedChatRoomStore from "../../../store/chat-room/SelectedChatRoomStore.js";
 import stompStore from "../../../store/stomp/StompStore.js";
 import chatStore from "../../../store/chat/ChatStore.js";
 import userStore from "../../../store/user/UserStore.js";
-import {getDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
 
 
 const TextareaChat = () => {
@@ -13,23 +12,16 @@ const TextareaChat = () => {
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {stompClient} = stompStore();
     const [chat, setChat] = useState('');
-    const {setMessages} = chatStore();
+    const {chatStatus, setChatStatus} = chatStore();
+
     const handleInputChange = (event) => {
         setChat(event.target.value);
     };
 
-    useEffect(() => {
-        getDetailChatRoom(selectedChatRoomId).then((response) => {
-            const {chatResList} = response.data.data;
-            const formattedMessages = formatMessages(chatResList);
-            setMessages(formattedMessages);
-        });
-    }, [setMessages, setChat]);
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (chat.trim() === '') {
-            return; // 빈 메시지는 전송하지 않음
+            return;
         }
         if (stompClient && chat) {
             await stompClient.publish({
@@ -37,14 +29,10 @@ const TextareaChat = () => {
                 body: JSON.stringify({"message": chat, "userId": userId}),
             });
             setChat('');
+            setChatStatus(!chatStatus);
         }
     };
-    const formatMessages = (chatResList) => {
-        return chatResList.map((message, index, array) => ({
-            ...message,
-            showAvatarAndName: index === 0 || array[index - 1].userId !== message.userId
-        }));
-    };
+    
     return (
         <Paper
             component="form"
