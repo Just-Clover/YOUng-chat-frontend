@@ -12,16 +12,12 @@ import {
     Typography
 } from "@mui/material";
 import selectedChatRoomStore from "../../../store/chat-room/SelectedChatRoomStore.js";
-import {getChatRoomList, getDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
+import {getDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
 import userStore from "../../../store/user/UserStore.js";
 import PropTypes from "prop-types";
 import {deleteChat} from "../../../api/chat/chatApi.js";
 import {addFriend} from "../../../api/friend/friendApi.js";
-import stompStore from "../../../store/stomp/StompStore.js";
 import chatStore from "../../../store/chat/ChatStore.js";
-import * as StompJs from "@stomp/stompjs";
-import {getCookie} from "../../../api/common/cookie.js";
-import chatRoomStore from "../../../store/chat-room/ChatRoomStore.js";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -154,14 +150,12 @@ MyMessage.propTypes = {
 };
 
 const MessageList = () => {
-    const {messages, setMessages} = chatStore();
+    const {messages, setMessages, chatStatus} = chatStore();
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [messageToDelete, setMessageToDelete] = useState(null);
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {userId} = userStore();
     const messagesEndRef = useRef(null);
-    const {setStompClient} = stompStore();
-    const {setChatRoom} = chatRoomStore();
     const handleOpenDeleteDialog = (message) => {
         setMessageToDelete(message);
         setOpenDeleteDialog(true);
@@ -169,8 +163,9 @@ const MessageList = () => {
 
     const handleConfirmDelete = async () => {
         if (messageToDelete) {
-            await deleteChat(selectedChatRoomId, messageToDelete.chatId);
-            updateMessagesAfterDelete();
+            deleteChat(selectedChatRoomId, messageToDelete.chatId).then(() => {
+                updateMessagesAfterDelete();
+            });
         }
         setOpenDeleteDialog(false);
     };
@@ -191,6 +186,7 @@ const MessageList = () => {
         );
         setMessages(updatedMessages);
     };
+
     const fetchInitialMessages = async () => {
         if (!selectedChatRoomId) return;
         const response = await getDetailChatRoom(selectedChatRoomId);
@@ -199,42 +195,12 @@ const MessageList = () => {
     };
 
     useEffect(() => {
+        scrollToBottom();
         fetchInitialMessages().then(() => {
             scrollToBottom();
         });
-        const client = new StompJs.Client({
-            brokerURL: import.meta.env.VITE_SOCKET_ROOT,
-            reconnectDelay: 500,
-            onConnect: () => {
-                console.log("WebSocket connected successfully");
-                client.subscribe(`/exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, () => {
-                    fetchInitialMessages().then(() => {
-                        scrollToBottom();
-                    });
-                });
+    }, [selectedChatRoomId, chatStatus]);
 
-                client.subscribe(`/exchange/chat.exchange/users.` + userId, () => {
-                    getChatRoomList().then(response => {
-                        setChatRoom(response.data.data);
-                    });
-                });
-            },
-            connectHeaders: {
-                AccessToken: getCookie("AccessToken"),
-            },
-            onStompError: (frame) => {
-                console.error("WebSocket error:", frame);
-            },
-            onDisconnect: () => {
-                console.log("WebSocket disconnected");
-            },
-        });
-        client.activate();
-        setStompClient(client);
-        return () => {
-            client.deactivate().then(() => console.log());
-        }
-    }, [selectedChatRoomId, setMessages]);
 
     const formatMessages = (chatResList) => {
         return chatResList.map((message, index, array) => ({
