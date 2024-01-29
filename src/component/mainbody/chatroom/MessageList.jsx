@@ -204,7 +204,7 @@ const MessageList = () => {
         });
         const client = new StompJs.Client({
             brokerURL: import.meta.env.VITE_SOCKET_ROOT,
-            reconnectDelay: 5000,
+            reconnectDelay: 500,
             onConnect: () => {
                 console.log("WebSocket connected successfully");
                 client.subscribe(`/exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, () => {
@@ -231,7 +231,9 @@ const MessageList = () => {
         });
         client.activate();
         setStompClient(client);
-        return () => {client.deactivate().then(() => console.log());}
+        return () => {
+            client.deactivate().then(() => console.log());
+        }
     }, [selectedChatRoomId, setMessages]);
 
     const formatMessages = (chatResList) => {
