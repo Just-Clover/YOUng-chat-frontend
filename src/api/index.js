@@ -4,13 +4,12 @@ import {setInterceptors} from "./common/interseptor.js";
 const rootUrl = import.meta.env.VITE_API_ROOT;
 
 function createInstance(url) {
-    const instance = axios.create({
+    return axios.create({
         baseURL: rootUrl + url,
         headers: {
             "Content-Type": "application/json",
         }
     });
-    return instance;
 }
 
 function createAuthInstance(url) {
