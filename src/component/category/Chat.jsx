@@ -34,7 +34,6 @@ export const Chat = () => {
     };
 
     return (
-
         <List component="nav" aria-label="mailbox folders" sx={{
             ml: 2, height: "100%", display: "flex", flexDirection: "column"
         }}>

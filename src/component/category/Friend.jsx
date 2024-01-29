@@ -90,23 +90,25 @@ export const Friend = () => {
             <Typography variant="h6" sx={{fontWeight: 'bold', mt: 2}}>
                 친구 목록
             </Typography>
-            {friend.map((friend, index) => (
-                <ListItem key={index} divider onClick={() => friendClick(friend)}>
-                    <ListItemButton>
-                        <ListItemAvatar>
-                            <Avatar
-                                alt="Travis Howard"
-                                src={friend.profileImage}
-                                sx={{
-                                    mr: 2
-                                }}
-                            />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={friend.username}/>
-                    </ListItemButton>
-                </ListItem>
-            ))}
+            <Box sx={{maxHeight: "48vh", overflowY: "auto"}}>
+                {friend.map((friend, index) => (
+                    <ListItem key={index} divider onClick={() => friendClick(friend)}>
+                        <ListItemButton>
+                            <ListItemAvatar>
+                                <Avatar
+                                    alt="Travis Howard"
+                                    src={friend.profileImage}
+                                    sx={{
+                                        mr: 2
+                                    }}
+                                />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={friend.username}/>
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </Box>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -139,10 +141,12 @@ export const Friend = () => {
                         </>
                     )}
                 </DialogContent>
-                    <Button onClick={() => handleChattingFriend(selectedFriend.userId)} autoFocus variant="outlined" sx={{ml:"20%", mb:"5%", width: "60%"}}>대화하기</Button>
-                    <Button variant="outlined" color="error" sx={{ml:"20%", mb:"5%", width: "60%", color: "#f44336"}} onClick={() => handleDeleteFriend(selectedFriend)} >
-                        친구삭제
-                    </Button>
+                <Button onClick={() => handleChattingFriend(selectedFriend.userId)} autoFocus variant="outlined"
+                        sx={{ml: "20%", mb: "5%", width: "60%"}}>대화하기</Button>
+                <Button variant="outlined" color="error" sx={{ml: "20%", mb: "5%", width: "60%", color: "#f44336"}}
+                        onClick={() => handleDeleteFriend(selectedFriend)}>
+                    친구삭제
+                </Button>
             </Dialog>
         </List>
     );
