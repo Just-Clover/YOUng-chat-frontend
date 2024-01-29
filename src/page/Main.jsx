@@ -1,4 +1,4 @@
-import {Box} from '@mui/material';
+import {Box, Snackbar} from '@mui/material';
 import Header from "../component/Header.jsx";
 import Footer from "../component/Footer.jsx";
 import MainBody from "../component/MainBody.jsx";
@@ -14,10 +14,16 @@ import stompStore from "../store/stomp/StompStore.js";
 import selectedChatRoomStore from "../store/chat-room/SelectedChatRoomStore.js";
 import chatStore from "../store/chat/ChatStore.js";
 import userStore from "../store/user/UserStore.js";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from '@mui/icons-material/Close';
+import Avatar from "@mui/material/Avatar";
+import Grid from "@mui/material/Grid";
 
 const Main = () => {
-    const [open, setOpen] = useState(true);
     const navigate = useNavigate();
+    const [open, setOpen] = useState(true);
+    const [snackOpen, setSnackOpen] = useState(false);
+    const [snackMessage, setSnackMessage] = useState({});
     const {setChatRoom} = chatRoomStore();
     const {setStompClient} = stompStore();
     const {selectedChatRoomId} = selectedChatRoomStore();
@@ -38,6 +44,12 @@ const Main = () => {
         }));
     };
 
+    const handleClose = (event, reason) => {
+        if (reason === 'timeout') {
+            setSnackOpen(false);
+        }
+    };
+
     useEffect(() => {
         const token = getCookie("AccessToken");
         if (!token) {
@@ -51,19 +63,20 @@ const Main = () => {
             onConnect: () => {
                 console.log("WebSocket connected successfully");
 
+                client.subscribe(`/exchange/chat.exchange/users.` + userId, (message) => {
+                    getChatRoomList().then(response => {
+                        setSnackOpen(false);
+                        setChatRoom(response.data.data);
+                        setSnackMessage(JSON.parse(message.body));
+                        setSnackOpen(true);
+                    });
+                });
                 if (selectedChatRoomId) {
                     client.subscribe(`/exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, () => {
                         fetchInitialMessages().then(() => {
                         });
                     });
                 }
-
-                client.subscribe(`/exchange/chat.exchange/users.` + userId, () => {
-                    getChatRoomList().then(response => {
-                        console.log("test");
-                        setChatRoom(response.data.data);
-                    });
-                });
             },
             connectHeaders: {
                 AccessToken: getCookie("AccessToken"),
@@ -78,7 +91,7 @@ const Main = () => {
         client.activate();
         setStompClient(client);
 
-    }, [selectedChatRoomId]);
+    }, [selectedChatRoomId, userId]);
 
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '98vh'}}>
@@ -87,6 +100,35 @@ const Main = () => {
                 <Sidebar open={open} handleDrawerClose={() => setOpen(false)}/>
                 <SecondColumn/>
                 <MainBody/>
+                <Snackbar
+                    anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+                    open={snackOpen}
+                    autoHideDuration={3000}
+                    onClose={handleClose}
+                    message={
+                        <div>
+                            <div>
+                                <strong>{snackMessage.chatRoomName}</strong>
+                            </div>
+                            <Grid>
+                                <Avatar src={snackMessage.profileImage}/>
+                                <div>{snackMessage.username}</div>
+                            </Grid>
+                            <br/>
+                            <div>{snackMessage.message}</div>
+                        </div>
+                    }
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            sx={{p: 0.5}}
+                            onClick={handleClose}
+                        >
+                            <CloseIcon/>
+                        </IconButton>
+                    }
+                />
             </Box>
             <Footer/>
         </Box>
