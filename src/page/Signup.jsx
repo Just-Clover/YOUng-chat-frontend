@@ -58,8 +58,6 @@ const Signup = () => {
                 mailSend(user.email);
             }
         })
-
-
     };
 
     const handleClose = () => {
