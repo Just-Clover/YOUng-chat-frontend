@@ -48,7 +48,7 @@ const ChatHeader = () => {
             alert("채팅방을 나갔습니다.");
             setLeaveOpen(false);
             getChatRoomList().then(response => {
-                setChatRoom(response.data.data);
+                setChatRoom(response.data.data.content);
             });
             setSelectedChatRoomId(null);
             setMainBody("");

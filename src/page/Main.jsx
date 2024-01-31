@@ -68,7 +68,7 @@ const Main = () => {
                 client.subscribe(`/exchange/chat.exchange/users.` + userId, (message) => {
                     getChatRoomList().then(response => {
                         setSnackOpen(false);
-                        setChatRoom(response.data.data);
+                        setChatRoom(response.data.data.content);
                         setSnackMessage(JSON.parse(message.body));
                         setSnackOpen(true);
                     });

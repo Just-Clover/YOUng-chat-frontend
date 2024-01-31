@@ -32,7 +32,7 @@ export const Chat = () => {
 
     const handleGetChatRoomList = () => {
         getChatRoomList().then(response => {
-            setChatRoom(response.data.data);
+            setChatRoom(response.data.data.content);
         });
     };
 
@@ -209,7 +209,6 @@ export const Chat = () => {
                         <Divider/>
                     </ListItem>
                 ))}
-
             </Box>
         </List>
 
