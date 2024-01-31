@@ -32,8 +32,7 @@ export const Friend = () => {
 
     const handleChattingFriend = (friendId) => {
         const friendData = {
-            friendIds: [friendId],
-            title: ""
+            friendId: friendId
         };
 
         createChatRoom(friendData).then(response => {

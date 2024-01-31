@@ -19,6 +19,10 @@ export const leaveChatRoom = (chatRoomId) => {
 };
 
 
-export const createChatRoom = (chatRoomData) => {
-    return chatRoom.post('', chatRoomData);
+export const createChatRoom = (userId) => {
+    return chatRoom.post('/personal', userId);
+}
+
+export const createGroupChatRoom = (userIds) => {
+    return chatRoom.post('/group', userIds);
 }
