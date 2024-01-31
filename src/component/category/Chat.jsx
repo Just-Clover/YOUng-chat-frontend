@@ -1,6 +1,6 @@
 import {Avatar, Checkbox, Dialog, DialogContent, List, ListItem, ListItemText, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
-import {createGroupChatRoom, getChatRoomList} from "../../api/chat-room/chatRoomApi.js";
+import {createChatRoom, createGroupChatRoom, getChatRoomList} from "../../api/chat-room/chatRoomApi.js";
 import chatRoomStore from "../../store/chat-room/ChatRoomStore.js";
 import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
@@ -51,6 +51,7 @@ export const Chat = () => {
 
     const handleClose = () => {
         setOpen(false);
+        setChecked([]);
     };
 
     const handleToggle = (value) => () => {
@@ -65,12 +66,25 @@ export const Chat = () => {
         setChecked(newChecked);
     };
 
-    const createChatRoom = () => {
-        createGroupChatRoom({
-            friendIds: checked
-        }).then((response) => {
+    const handleCreateChatRoom = () => {
+        if (checked.length === 0) {
+            handleClose();
+            return;
+        }
+        if (checked.length > 1) {
+            createGroupChatRoom({
+                friendIds: checked
+            }).then((response) => {
+                setOpen(false);
+                setChecked([]);
+                alert("채팅방이 생성되었습니다.");
+                chatRoomClick(response.data.data);
+            });
+            return;
+        }
+        createChatRoom({friendId : checked[0]}).then((response) => {
             setOpen(false);
-            alert("채팅방이 생성되었습니다.");
+            setChecked([]);
             chatRoomClick(response.data.data);
         })
     };
@@ -94,11 +108,11 @@ export const Chat = () => {
             <Dialog
                 open={open}
                 onClose={handleClose}
-                maxWidth="lg"
+                maxWidth="500"
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogContent sx={{background: "#9ccc65", fontWeight: "bold", color: "white"}}>
+                <DialogContent sx={{width: 500, background: "#9ccc65", fontWeight: "bold", color: "white"}}>
                     채팅방 생성
                 </DialogContent>
                 <Box sx={{maxHeight: "48vh", overflowY: "auto"}}>
@@ -106,15 +120,8 @@ export const Chat = () => {
                         <ListItem
                             key={index}
                             divider
-                            secondaryAction={
-                                <Checkbox
-                                    edge="end"
-                                    onChange={handleToggle(friend.userId)}
-                                    checked={checked.indexOf(friend.userId) !== -1}
-                                />
-                            }
                         >
-                            <ListItemButton>
+                            <ListItemButton onClick={handleToggle(friend.userId)} >
                                 <ListItemAvatar>
                                     <Avatar
                                         alt="Travis Howard"
@@ -132,7 +139,8 @@ export const Chat = () => {
                                                 whiteSpace: 'nowrap',
                                                 overflow: 'hidden',
                                                 textOverflow: 'ellipsis',
-                                                width: '100%'
+                                                width: '100%',
+                                                mr: "10%"
                                             }}
                                             component="span"
                                         >
@@ -140,11 +148,15 @@ export const Chat = () => {
                                         </Typography>
                                     }
                                 />
+                                <Checkbox
+                                    edge="start"
+                                    checked={checked.indexOf(friend.userId) !== -1}
+                                />
                             </ListItemButton>
                         </ListItem>
                     ))}
                 </Box>
-                <Button onClick={() => createChatRoom()} autoFocus variant="outlined"
+                <Button onClick={() => handleCreateChatRoom()} autoFocus variant="outlined"
                         sx={{ml: "20%", mb: "5%", mt: "5%", width: "60%"}}>생성하기</Button>
             </Dialog>
             <Divider/>

@@ -25,7 +25,7 @@ const Profile = () => {
                         <Avatar
                             src={profileImage}
                             sx={{
-                                m: 1, bgcolor: 'secondary.main',
+                                m: 1, background: 'secondary.main',
                                 width: 200,
                                 height: 200
                             }}/>
