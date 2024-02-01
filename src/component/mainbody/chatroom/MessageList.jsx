@@ -12,12 +12,13 @@ import {
     Typography
 } from "@mui/material";
 import selectedChatRoomStore from "../../../store/chat-room/SelectedChatRoomStore.js";
-import {getDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
+import {getPaginationDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
 import userStore from "../../../store/user/UserStore.js";
 import PropTypes from "prop-types";
 import {deleteChat} from "../../../api/chat/chatApi.js";
 import {addFriend} from "../../../api/friend/friendApi.js";
 import chatStore from "../../../store/chat/ChatStore.js";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -156,6 +157,8 @@ const MessageList = () => {
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {userId} = userStore();
     const messagesEndRef = useRef(null);
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(false);
     const handleOpenDeleteDialog = (message) => {
         setMessageToDelete(message);
         setOpenDeleteDialog(true);
@@ -177,9 +180,8 @@ const MessageList = () => {
     const scrollToBottom = () => {
         setTimeout(() => {
             messagesEndRef.current?.scrollIntoView({behavior: "smooth"});
-        }, 10);
+        }, 100);
     };
-
     const updateMessagesAfterDelete = () => {
         const updatedMessages = messages.map(message =>
             message.chatId === messageToDelete.chatId ? {...message, deleted: true} : message
@@ -189,47 +191,97 @@ const MessageList = () => {
 
     const fetchInitialMessages = async () => {
         if (!selectedChatRoomId) return;
-        const response = await getDetailChatRoom(selectedChatRoomId);
-        const formattedMessages = formatMessages(response.data.data.chatResList);
-        setMessages(formattedMessages);
+        const response = await getPaginationDetailChatRoom(selectedChatRoomId, "");
+        if (response.data && response.data.data && Array.isArray(response.data.data.chatResList.content)) {
+            const formattedMessages = formatMessages(response.data.data.chatResList);
+            await setMessages(formattedMessages);
+            console.log(messages);
+        }
+    };
+
+
+    const fetchBeforeMessages = async () => {
+        if (!selectedChatRoomId || loading || !hasMore) return;
+
+        setLoading(true);
+
+        const lastMessage = messages[messages.length - 1]; // 가장 오래된 메시지
+        const lastMessageId = lastMessage?.chatId;
+
+        try {
+            const response = await getPaginationDetailChatRoom(selectedChatRoomId, lastMessageId);
+            const newMessages = formatMessages(response.data.data.chatResList);
+
+            if (newMessages.length > 0) {
+                setTimeout(() => {
+                    setMessages(messages.concat(newMessages));
+                }, 1000);
+            } else {
+                setHasMore(false);
+            }
+        } catch (error) {
+            console.error('Failed to fetch messages:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
-        scrollToBottom();
+        setHasMore(true);
         fetchInitialMessages().then(() => {
             scrollToBottom();
         });
     }, [selectedChatRoomId, chatStatus]);
 
-
     const formatMessages = (chatResList) => {
-        return chatResList.map((message, index, array) => ({
+        return chatResList.content.map((message, index, array) => ({
             ...message,
             showAvatarAndName: index === 0 || array[index - 1].userId !== message.userId
         }));
     };
 
     return (
-        <Box sx={{p: 2, maxHeight: 'calc(100vh - 400px)', overflowY: 'auto'}}>
-            {messages.map((message, index) => (
-                message.userId === userId ?
-                    <MyMessage key={index} chat={message} onOpenDeleteDialog={() => handleOpenDeleteDialog(message)}/> :
-                    <OtherUserMessage key={index} chat={message} showAvatarAndName={message.showAvatarAndName}/>
-            ))}
-            <div ref={messagesEndRef}/>
 
-            <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
-                <DialogTitle id="alert-dialog-title">{"메시지를 삭제하시겠습니까?"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        이 메시지를 삭제하면 되돌릴 수 없습니다.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleConfirmDelete} color="error" autoFocus>확인</Button>
-                    <Button onClick={handleCloseDeleteDialog} color="primary">취소</Button>
-                </DialogActions>
-            </Dialog>
+        <Box
+            id="scrollableDiv"
+            style={{
+                height: 550,
+                overflow: "auto",
+                display: "flex",
+                flexDirection: "column-reverse"
+            }}
+            ref={messagesEndRef}
+        >
+            <InfiniteScroll
+                dataLength={messages.length}
+                next={fetchBeforeMessages}
+                style={{display: "flex", flexDirection: "column-reverse"}}
+                inverse={true}
+                hasMore={hasMore}
+                loader={<h4>Loading...</h4>}
+                scrollableTarget="scrollableDiv"
+            >
+                {messages.map((message, index) => (
+                    message.userId === userId ?
+                        <MyMessage key={index} chat={message}
+                                   onOpenDeleteDialog={() => handleOpenDeleteDialog(message)}/> :
+                        <OtherUserMessage key={index} chat={message} showAvatarAndName={message.showAvatarAndName}/>
+                ))}
+                <div ref={messagesEndRef}/>
+
+                <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
+                    <DialogTitle id="alert-dialog-title">{"메시지를 삭제하시겠습니까?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            이 메시지를 삭제하면 되돌릴 수 없습니다.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleConfirmDelete} color="error" autoFocus>확인</Button>
+                        <Button onClick={handleCloseDeleteDialog} color="primary">취소</Button>
+                    </DialogActions>
+                </Dialog>
+            </InfiniteScroll>
         </Box>
     );
 };

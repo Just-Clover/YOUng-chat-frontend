@@ -8,7 +8,7 @@ import {useEffect, useState} from "react";
 import {deleteToken, getCookie} from "../api/common/cookie.js";
 import {useNavigate} from "react-router-dom";
 import * as StompJs from "@stomp/stompjs";
-import {getChatRoomList, getDetailChatRoom} from "../api/chat-room/chatRoomApi.js";
+import {getChatRoomList, getPaginationDetailChatRoom} from "../api/chat-room/chatRoomApi.js";
 import chatRoomStore from "../store/chat-room/ChatRoomStore.js";
 import stompStore from "../store/stomp/StompStore.js";
 import selectedChatRoomStore from "../store/chat-room/SelectedChatRoomStore.js";
@@ -30,15 +30,18 @@ const Main = () => {
     const {setMessages} = chatStore();
     const {userId} = userStore();
 
+
     const fetchInitialMessages = async () => {
         if (!selectedChatRoomId) return;
-        const response = await getDetailChatRoom(selectedChatRoomId);
-        const formattedMessages = formatMessages(response.data.data.chatResList);
-        setMessages(formattedMessages);
+        const response = await getPaginationDetailChatRoom(selectedChatRoomId, "");
+        if (response.data && response.data.data && Array.isArray(response.data.data.chatResList.content)) {
+            const formattedMessages = formatMessages(response.data.data.chatResList);
+            setMessages(formattedMessages);
+        }
     };
 
     const formatMessages = (chatResList) => {
-        return chatResList.map((message, index, array) => ({
+        return chatResList.content.map((message, index, array) => ({
             ...message,
             showAvatarAndName: index === 0 || array[index - 1].userId !== message.userId
         }));
