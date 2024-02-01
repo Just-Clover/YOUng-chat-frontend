@@ -8,6 +8,10 @@ export const getDetailChatRoom = (chatRoomId) => {
     return chatRoom.get(`/${chatRoomId}`);
 };
 
+export const getPaginationDetailChatRoom = (chatRoomId, lastChatId) => {
+    return chatRoom.get(`/slice/${chatRoomId}?lastChatId=${lastChatId}`);
+};
+
 export const editChatRoom = (chatRoomId, title) => {
     return chatRoom.patch(`/${chatRoomId}`, {
         title: title
