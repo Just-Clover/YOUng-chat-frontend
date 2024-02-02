@@ -127,7 +127,7 @@ OtherUserMessage.propTypes = {
 
 const MyMessage = ({chat, onOpenDeleteDialog}) => {
     return (
-        <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', mb: 2, maxWidth: '100%'}}>
+        <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', mr: 2, mb: 2, maxWidth: '100%'}}>
             <Typography minWidth="20%" textAlign="right" variant="caption">
                 {formatDate(chat.messageTime)}
             </Typography>
