@@ -30,7 +30,12 @@ export const Chat = () => {
 
     useEffect(() => {
         setChatRoomHasMore(true);
-        handleGetChatRoomList();
+        handleGetChatRoomList().then(() => {
+            const scrollableDiv = document.getElementById("scrollableDiv2");
+            if (scrollableDiv) {
+                scrollableDiv.scrollTop = 0;
+            }
+        });
     }, [messages, chatStatus]);
 
     const handleGetChatRoomList = async () => {
