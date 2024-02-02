@@ -70,14 +70,16 @@ const Main = () => {
             brokerURL: import.meta.env.VITE_SOCKET_ROOT,
             reconnectDelay: 500,
             onConnect: () => {
-                console.log("WebSocket connected successfully");
-
                 client.subscribe(`/exchange/chat.exchange/users.` + userId, (message) => {
                     setChatRoomHasMore(true);
+
                     fetchInitialChatRoomList().then(() => {
-                        setSnackOpen(false);
-                        setSnackMessage(JSON.parse(message.body));
-                        setSnackOpen(true);
+                        const chatRoomId = ((JSON.parse(message.body)).chatRoomId);
+                        if (selectedChatRoomId !== chatRoomId) {
+                            setSnackOpen(false);
+                            setSnackMessage(JSON.parse(message.body));
+                            setSnackOpen(true);
+                        }
                     })
                 });
                 if (selectedChatRoomId) {
@@ -100,6 +102,9 @@ const Main = () => {
         client.activate();
         setStompClient(client);
 
+        return () => {
+            client.deactivate();
+        }
     }, [selectedChatRoomId, userId]);
 
     return (
