@@ -33,7 +33,10 @@ const SecondColumn = () => {
     };
 
     return (
-        <Box sx={{flexGrow: 1, p: 3, flexBasis: '20%', maxWidth: '20%'}}>
+        <Box sx={{
+            flexGrow: 1, p: 3, flexBasis: '20%', maxWidth: '20%',
+            maxHeight: '70vh'
+        }}>
             <ListItem alignItems="flex-start" sx={{
                 bgcolor: "#f9fbe7"
             }}>

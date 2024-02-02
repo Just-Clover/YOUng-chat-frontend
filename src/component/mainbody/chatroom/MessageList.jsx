@@ -12,16 +12,13 @@ import {
     Typography
 } from "@mui/material";
 import selectedChatRoomStore from "../../../store/chat-room/SelectedChatRoomStore.js";
-import {getChatRoomList, getDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
+import {getPaginationDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
 import userStore from "../../../store/user/UserStore.js";
 import PropTypes from "prop-types";
 import {deleteChat} from "../../../api/chat/chatApi.js";
 import {addFriend} from "../../../api/friend/friendApi.js";
-import stompStore from "../../../store/stomp/StompStore.js";
 import chatStore from "../../../store/chat/ChatStore.js";
-import * as StompJs from "@stomp/stompjs";
-import {getCookie} from "../../../api/common/cookie.js";
-import chatRoomStore from "../../../store/chat-room/ChatRoomStore.js";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -130,7 +127,7 @@ OtherUserMessage.propTypes = {
 
 const MyMessage = ({chat, onOpenDeleteDialog}) => {
     return (
-        <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', mb: 2, maxWidth: '100%'}}>
+        <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', mr: 2, mb: 2, maxWidth: '100%'}}>
             <Typography minWidth="20%" textAlign="right" variant="caption">
                 {formatDate(chat.messageTime)}
             </Typography>
@@ -154,14 +151,13 @@ MyMessage.propTypes = {
 };
 
 const MessageList = () => {
-    const {messages, setMessages} = chatStore();
+    const {messages, setMessages, chatStatus, hasMore, setHasMore} = chatStore();
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [messageToDelete, setMessageToDelete] = useState(null);
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {userId} = userStore();
     const messagesEndRef = useRef(null);
-    const {setStompClient} = stompStore();
-    const {setChatRoom} = chatRoomStore();
+    const [loading, setLoading] = useState(false);
     const handleOpenDeleteDialog = (message) => {
         setMessageToDelete(message);
         setOpenDeleteDialog(true);
@@ -169,8 +165,9 @@ const MessageList = () => {
 
     const handleConfirmDelete = async () => {
         if (messageToDelete) {
-            await deleteChat(selectedChatRoomId, messageToDelete.chatId);
-            updateMessagesAfterDelete();
+            deleteChat(selectedChatRoomId, messageToDelete.chatId).then(() => {
+                updateMessagesAfterDelete();
+            });
         }
         setOpenDeleteDialog(false);
     };
@@ -182,88 +179,106 @@ const MessageList = () => {
     const scrollToBottom = () => {
         setTimeout(() => {
             messagesEndRef.current?.scrollIntoView({behavior: "smooth"});
-        }, 10);
+        }, 100);
     };
-
     const updateMessagesAfterDelete = () => {
         const updatedMessages = messages.map(message =>
             message.chatId === messageToDelete.chatId ? {...message, deleted: true} : message
         );
         setMessages(updatedMessages);
     };
+
     const fetchInitialMessages = async () => {
         if (!selectedChatRoomId) return;
-        const response = await getDetailChatRoom(selectedChatRoomId);
-        const formattedMessages = formatMessages(response.data.data.chatResList);
+        const response = await getPaginationDetailChatRoom(selectedChatRoomId, "");
+        const formattedMessages = formatMessages(response.data.data.chatResList.content);
+        setHasMore(true);
         setMessages(formattedMessages);
     };
 
+
+    const fetchBeforeMessages = async () => {
+        if (!selectedChatRoomId || loading || !hasMore) return;
+
+        setLoading(true);
+
+        const lastMessage = messages[messages.length - 1]; // 가장 오래된 메시지
+        const lastMessageId = lastMessage?.chatId;
+
+        try {
+            const response = await getPaginationDetailChatRoom(selectedChatRoomId, lastMessageId);
+            const newMessages = response.data.data.chatResList.content;
+
+            if (newMessages.length > 0) {
+                setTimeout(() => {
+                    setMessages(formatMessages(messages.concat(newMessages)));
+                }, 1000);
+            } else {
+                setHasMore(false);
+            }
+        } catch (error) {
+            console.error('Failed to fetch messages:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
+        setHasMore(true);
         fetchInitialMessages().then(() => {
             scrollToBottom();
         });
-        const client = new StompJs.Client({
-            brokerURL: import.meta.env.VITE_SOCKET_ROOT,
-            reconnectDelay: 500,
-            onConnect: () => {
-                console.log("WebSocket connected successfully");
-                client.subscribe(`/exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, () => {
-                    fetchInitialMessages().then(() => {
-                        scrollToBottom();
-                    });
-                });
-
-                client.subscribe(`/exchange/chat.exchange/users.` + userId, () => {
-                    getChatRoomList().then(response => {
-                        setChatRoom(response.data.data);
-                    });
-                });
-            },
-            connectHeaders: {
-                AccessToken: getCookie("AccessToken"),
-            },
-            onStompError: (frame) => {
-                console.error("WebSocket error:", frame);
-            },
-            onDisconnect: () => {
-                console.log("WebSocket disconnected");
-            },
-        });
-        client.activate();
-        setStompClient(client);
-        return () => {
-            client.deactivate().then(() => console.log());
-        }
-    }, [selectedChatRoomId, setMessages]);
+    }, [selectedChatRoomId, chatStatus]);
 
     const formatMessages = (chatResList) => {
         return chatResList.map((message, index, array) => ({
             ...message,
-            showAvatarAndName: index === 0 || array[index - 1].userId !== message.userId
+            showAvatarAndName: index === (array.length - 1) || array[index + 1].userId !== message.userId
         }));
     };
 
     return (
-        <Box sx={{p: 2, maxHeight: 'calc(100vh - 400px)', overflowY: 'auto'}}>
-            {messages.map((message, index) => (
-                message.userId === userId ?
-                    <MyMessage key={index} chat={message} onOpenDeleteDialog={() => handleOpenDeleteDialog(message)}/> :
-                    <OtherUserMessage key={index} chat={message} showAvatarAndName={message.showAvatarAndName}/>
-            ))}
-            <div ref={messagesEndRef}/>
 
-            <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
-                <DialogTitle id="alert-dialog-title">{"메시지를 삭제하시겠습니까?"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        이 메시지를 삭제하면 되돌릴 수 없습니다.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleConfirmDelete} color="error" autoFocus>확인</Button>
-                    <Button onClick={handleCloseDeleteDialog} color="primary">취소</Button>
-                </DialogActions>
-            </Dialog>
+        <Box
+            id="scrollableDiv"
+            style={{
+                height: "60vh",
+                overflow: "auto",
+                display: "flex",
+                flexDirection: "column-reverse"
+            }}
+            ref={messagesEndRef}
+        >
+            <InfiniteScroll
+                dataLength={messages.length}
+                next={fetchBeforeMessages}
+                style={{display: "flex", flexDirection: "column-reverse"}}
+                inverse={true}
+                hasMore={hasMore}
+                loader={<h4>Loading...</h4>}
+                scrollableTarget="scrollableDiv"
+            >
+                {messages.map((message, index) => (
+                    message.userId === userId ?
+                        <MyMessage key={index} chat={message}
+                                   onOpenDeleteDialog={() => handleOpenDeleteDialog(message)}/> :
+                        <OtherUserMessage key={index} chat={message} showAvatarAndName={message.showAvatarAndName}/>
+                ))}
+                <div ref={messagesEndRef}/>
+
+                <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
+                    <DialogTitle id="alert-dialog-title">{"메시지를 삭제하시겠습니까?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            이 메시지를 삭제하면 되돌릴 수 없습니다.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleConfirmDelete} color="error" autoFocus>확인</Button>
+                        <Button onClick={handleCloseDeleteDialog} color="primary">취소</Button>
+                    </DialogActions>
+                </Dialog>
+            </InfiniteScroll>
         </Box>
     );
 };

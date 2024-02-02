@@ -10,7 +10,12 @@ import mainBodyStore from "../../../store/main/MainBodyStore.js";
 import chatRoomStore from "../../../store/chat-room/ChatRoomStore.js";
 
 const ChatHeader = () => {
-    const {selectedChatRoomId, setSelectedChatRoomId, selectedChatRoomTitle, setSelectedChatRoomTitle} = selectedChatRoomStore();
+    const {
+        selectedChatRoomId,
+        setSelectedChatRoomId,
+        selectedChatRoomTitle,
+        setSelectedChatRoomTitle
+    } = selectedChatRoomStore();
     const [title, setTitle] = useState(selectedChatRoomTitle);
     const [titleOpen, setTitleOpen] = useState(false);
     const [leaveOpen, setLeaveOpen] = useState(false);
@@ -47,8 +52,8 @@ const ChatHeader = () => {
         leaveChatRoom(selectedChatRoomId).then(() => {
             alert("채팅방을 나갔습니다.");
             setLeaveOpen(false);
-            getChatRoomList().then(response => {
-                setChatRoom(response.data.data);
+            getChatRoomList("").then(response => {
+                setChatRoom(response.data.data.content);
             });
             setSelectedChatRoomId(null);
             setMainBody("");
@@ -59,9 +64,9 @@ const ChatHeader = () => {
     }, [title]);
 
     return (
-        <AppBar position="static" sx={{bgcolor: "#9ccc65", mb:2}} >
+        <AppBar position="static" sx={{bgcolor: "#9ccc65", mb: 2}}>
             <Toolbar>
-                <IconButton sx={{mr:1, color: "#1b5e20"}} onClick={titleOpenDialog}>
+                <IconButton sx={{mr: 1, color: "#1b5e20"}} onClick={titleOpenDialog}>
                     <EditNoteSharpIcon/>
                 </IconButton>
 

@@ -4,13 +4,12 @@ import {setInterceptors} from "./common/interseptor.js";
 const rootUrl = import.meta.env.VITE_API_ROOT;
 
 function createInstance(url) {
-    const instance = axios.create({
+    return axios.create({
         baseURL: rootUrl + url,
         headers: {
             "Content-Type": "application/json",
         }
     });
-    return instance;
 }
 
 function createAuthInstance(url) {
@@ -26,6 +25,6 @@ export const user = createAuthInstance('/api/v1/users');
 
 export const friend = createAuthInstance('/api/v1/friends');
 
-export const chatRoom = createAuthInstance('/api/v1/chat-rooms');
+export const chatRoom = createAuthInstance('/api/v1');
 
 export const chat = createAuthInstance('/api/v1/chat-rooms')
