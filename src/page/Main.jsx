@@ -24,26 +24,30 @@ const Main = () => {
     const [open, setOpen] = useState(true);
     const [snackOpen, setSnackOpen] = useState(false);
     const [snackMessage, setSnackMessage] = useState({});
-    const {setChatRoom} = chatRoomStore();
+    const {setChatRoom, chatRoomHasMore, setChatRoomHasMore} = chatRoomStore();
     const {setStompClient} = stompStore();
     const {selectedChatRoomId} = selectedChatRoomStore();
-    const {setMessages} = chatStore();
+    const {setMessages, setHasMore} = chatStore();
     const {userId} = userStore();
 
 
     const fetchInitialMessages = async () => {
         if (!selectedChatRoomId) return;
         const response = await getPaginationDetailChatRoom(selectedChatRoomId, "");
-        if (response.data && response.data.data && Array.isArray(response.data.data.chatResList.content)) {
-            const formattedMessages = formatMessages(response.data.data.chatResList);
-            setMessages(formattedMessages);
-        }
+        setHasMore(true);
+        const formattedMessages = await formatMessages(response.data.data.chatResList.content);
+        setMessages(formattedMessages);
     };
 
+    const fetchInitialChatRoomList = async () => {
+        const response = await getChatRoomList("");
+        setChatRoom(response.data.data.content);
+    }
+
     const formatMessages = (chatResList) => {
-        return chatResList.content.map((message, index, array) => ({
+        return chatResList.map((message, index, array) => ({
             ...message,
-            showAvatarAndName: index === 0 || array[index - 1].userId !== message.userId
+            showAvatarAndName: index === (array.length - 1) || array[index + 1].userId !== message.userId
         }));
     };
 
@@ -69,12 +73,12 @@ const Main = () => {
                 console.log("WebSocket connected successfully");
 
                 client.subscribe(`/exchange/chat.exchange/users.` + userId, (message) => {
-                    getChatRoomList().then(response => {
+                    setChatRoomHasMore(true);
+                    fetchInitialChatRoomList().then(() => {
                         setSnackOpen(false);
-                        setChatRoom(response.data.data.content);
                         setSnackMessage(JSON.parse(message.body));
                         setSnackOpen(true);
-                    });
+                    })
                 });
                 if (selectedChatRoomId) {
                     client.subscribe(`/exchange/chat.exchange/chat-rooms.` + selectedChatRoomId, () => {

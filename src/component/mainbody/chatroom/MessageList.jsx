@@ -151,13 +151,13 @@ MyMessage.propTypes = {
 };
 
 const MessageList = () => {
-    const {messages, setMessages, chatStatus} = chatStore();
+    const {messages, setMessages, chatStatus, hasMore, setHasMore} = chatStore();
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [messageToDelete, setMessageToDelete] = useState(null);
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {userId} = userStore();
     const messagesEndRef = useRef(null);
-    const [hasMore, setHasMore] = useState(true);
+    const [] = useState(true);
     const [loading, setLoading] = useState(false);
     const handleOpenDeleteDialog = (message) => {
         setMessageToDelete(message);
@@ -192,11 +192,10 @@ const MessageList = () => {
     const fetchInitialMessages = async () => {
         if (!selectedChatRoomId) return;
         const response = await getPaginationDetailChatRoom(selectedChatRoomId, "");
-        if (response.data && response.data.data && Array.isArray(response.data.data.chatResList.content)) {
-            const formattedMessages = formatMessages(response.data.data.chatResList);
-            await setMessages(formattedMessages);
-            console.log(messages);
-        }
+        const formattedMessages = formatMessages(response.data.data.chatResList.content);
+        console.log("메세지가 초기화됨");
+        setHasMore(true);
+        setMessages(formattedMessages);
     };
 
 
@@ -210,11 +209,11 @@ const MessageList = () => {
 
         try {
             const response = await getPaginationDetailChatRoom(selectedChatRoomId, lastMessageId);
-            const newMessages = formatMessages(response.data.data.chatResList);
+            const newMessages = response.data.data.chatResList.content;
 
             if (newMessages.length > 0) {
                 setTimeout(() => {
-                    setMessages(messages.concat(newMessages));
+                    setMessages(formatMessages(messages.concat(newMessages)));
                 }, 1000);
             } else {
                 setHasMore(false);
@@ -234,9 +233,9 @@ const MessageList = () => {
     }, [selectedChatRoomId, chatStatus]);
 
     const formatMessages = (chatResList) => {
-        return chatResList.content.map((message, index, array) => ({
+        return chatResList.map((message, index, array) => ({
             ...message,
-            showAvatarAndName: index === 0 || array[index - 1].userId !== message.userId
+            showAvatarAndName: index === (array.length - 1) || array[index + 1].userId !== message.userId
         }));
     };
 

@@ -25,6 +25,6 @@ export const user = createAuthInstance('/api/v1/users');
 
 export const friend = createAuthInstance('/api/v1/friends');
 
-export const chatRoom = createAuthInstance('/api/v1/chat-rooms');
+export const chatRoom = createAuthInstance('/api/v1');
 
 export const chat = createAuthInstance('/api/v1/chat-rooms')

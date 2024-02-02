@@ -1,30 +1,30 @@
 import {chatRoom} from "../index.js";
 
-export const getChatRoomList = () => {
-    return chatRoom.get();
+export const getChatRoomList = (cursorChatId) => {
+    return chatRoom.get(`/chat-rooms?cursorChatId=${cursorChatId}`);
 }
 
 export const getDetailChatRoom = (chatRoomId) => {
-    return chatRoom.get(`/${chatRoomId}`);
+    return chatRoom.get(`/chat-rooms/${chatRoomId}`);
 };
 
 export const getPaginationDetailChatRoom = (chatRoomId, lastChatId) => {
-    return chatRoom.get(`/slice/${chatRoomId}?lastChatId=${lastChatId}`);
+    return chatRoom.get(`/chat-rooms/slice/${chatRoomId}?lastChatId=${lastChatId}`);
 };
 
 export const editChatRoom = (chatRoomId, title) => {
-    return chatRoom.patch(`/${chatRoomId}`, {
+    return chatRoom.patch(`/chat-rooms/${chatRoomId}`, {
         title: title
     });
 };
 
 export const leaveChatRoom = (chatRoomId) => {
-    return chatRoom.delete(`/${chatRoomId}`);
+    return chatRoom.delete(`/chat-rooms/${chatRoomId}`);
 };
 
 
 export const createChatRoom = (userId) => {
-    return chatRoom.post('/personal', userId);
+    return chatRoom.post('/chat-rooms/personal', userId);
 }
 
 export const createGroupChatRoom = (userIds) => {
