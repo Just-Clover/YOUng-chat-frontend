@@ -157,7 +157,6 @@ const MessageList = () => {
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {userId} = userStore();
     const messagesEndRef = useRef(null);
-    const [] = useState(true);
     const [loading, setLoading] = useState(false);
     const handleOpenDeleteDialog = (message) => {
         setMessageToDelete(message);
@@ -243,7 +242,7 @@ const MessageList = () => {
         <Box
             id="scrollableDiv"
             style={{
-                height: 550,
+                height: 500,
                 overflow: "auto",
                 display: "flex",
                 flexDirection: "column-reverse"
