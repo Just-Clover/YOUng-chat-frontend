@@ -193,7 +193,6 @@ const MessageList = () => {
         if (!selectedChatRoomId) return;
         const response = await getPaginationDetailChatRoom(selectedChatRoomId, "");
         const formattedMessages = formatMessages(response.data.data.chatResList.content);
-        console.log("메세지가 초기화됨");
         setHasMore(true);
         setMessages(formattedMessages);
     };

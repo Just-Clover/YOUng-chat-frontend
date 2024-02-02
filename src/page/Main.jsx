@@ -24,7 +24,7 @@ const Main = () => {
     const [open, setOpen] = useState(true);
     const [snackOpen, setSnackOpen] = useState(false);
     const [snackMessage, setSnackMessage] = useState({});
-    const {setChatRoom, chatRoomHasMore, setChatRoomHasMore} = chatRoomStore();
+    const {setChatRoom, setChatRoomHasMore} = chatRoomStore();
     const {setStompClient} = stompStore();
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {setMessages, setHasMore} = chatStore();

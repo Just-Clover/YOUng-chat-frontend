@@ -41,7 +41,6 @@ export const Chat = () => {
     const handleGetChatRoomList = async () => {
         const response = await getChatRoomList("");
         await setChatRoom(response.data.data.content);
-        console.log(chatRoom);
     };
 
     const fetchChatRoomList = async () => {
