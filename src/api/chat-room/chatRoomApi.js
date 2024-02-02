@@ -28,5 +28,5 @@ export const createChatRoom = (userId) => {
 }
 
 export const createGroupChatRoom = (userIds) => {
-    return chatRoom.post('/group', userIds);
+    return chatRoom.post('/chat-rooms/group', userIds);
 }
