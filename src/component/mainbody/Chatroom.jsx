@@ -8,9 +8,7 @@ const Chatroom = () => {
     return (
         <Box sx={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column'}}>
             <ChatHeader/>
-            <Box sx={{flexGrow: 1, overflowY: 'auto'}}>
-                <MessageList/>
-            </Box>
+            <MessageList/>
             <Divider sx={{my: 2}}/>
             <TextareaChat/>
         </Box>

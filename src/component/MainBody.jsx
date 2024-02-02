@@ -36,11 +36,12 @@ const MainBody = () => {
             sx={{
                 flexGrow: 1,
                 p: 3,
-                flexBasis: '67%'
+                flexBasis: '67%',
+                maxHeight: '73vh'
             }}
         >
             <Paper sx={{
-                height: '100%',
+                height: '73vh',
                 my: 'auto',
                 mx: 'auto',
                 p: 2,

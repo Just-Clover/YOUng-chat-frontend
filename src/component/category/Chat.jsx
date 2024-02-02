@@ -196,7 +196,7 @@ export const Chat = () => {
                 id="scrollableDiv2"
                 style={{
                     overflowY: "auto",
-                    height: 700
+                    height: "65vh"
                 }}>
                 <InfiniteScroll
                     dataLength={chatRoom.length}

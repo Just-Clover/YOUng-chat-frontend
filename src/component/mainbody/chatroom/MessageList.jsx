@@ -242,7 +242,7 @@ const MessageList = () => {
         <Box
             id="scrollableDiv"
             style={{
-                height: 500,
+                height: "60vh",
                 overflow: "auto",
                 display: "flex",
                 flexDirection: "column-reverse"
