@@ -15,10 +15,10 @@ import selectedChatRoomStore from "../../../store/chat-room/SelectedChatRoomStor
 import {getPaginationDetailChatRoom} from "../../../api/chat-room/chatRoomApi.js";
 import userStore from "../../../store/user/UserStore.js";
 import PropTypes from "prop-types";
-import {deleteChat} from "../../../api/chat/chatApi.js";
 import {addFriend} from "../../../api/friend/friendApi.js";
 import chatStore from "../../../store/chat/ChatStore.js";
 import InfiniteScroll from "react-infinite-scroll-component";
+import stompStore from "../../../store/stomp/StompStore.js";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -60,7 +60,7 @@ const OtherUserMessage = ({chat, showAvatarAndName}) => {
                 <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
                     <Paper sx={{p: 1, bgcolor: '#b3e5fc', borderRadius: '10px', mr: 1}}>
                         <Typography variant="body1" sx={{wordBreak: 'break-word'}}>
-                            {chat.deleted ? '삭제된 메세지입니다.' : chat.message}
+                            {chat.isDeleted ? '삭제된 메세지입니다.' : chat.message}
                         </Typography>
                     </Paper>
                     <Typography minWidth="20%" variant="caption">
@@ -120,7 +120,7 @@ OtherUserMessage.propTypes = {
         username: PropTypes.string,
         message: PropTypes.string,
         messageTime: PropTypes.string,
-        deleted: PropTypes.bool,
+        isDeleted: PropTypes.bool,
     }),
     showAvatarAndName: PropTypes.bool,
 };
@@ -134,7 +134,7 @@ const MyMessage = ({chat, onOpenDeleteDialog}) => {
             <Paper sx={{p: 1, bgcolor: '#f0f4c3', borderRadius: '10px', ml: 1, cursor: 'pointer'}}
                    onClick={onOpenDeleteDialog}>
                 <Typography variant="body1" sx={{wordBreak: 'break-word'}}>
-                    {chat.deleted ? '삭제된 메세지입니다.' : chat.message}
+                    {chat.isDeleted ? '삭제된 메세지입니다.' : chat.message}
                 </Typography>
             </Paper>
         </Box>
@@ -145,7 +145,7 @@ MyMessage.propTypes = {
     chat: PropTypes.shape({
         message: PropTypes.string,
         messageTime: PropTypes.string,
-        deleted: PropTypes.bool,
+        isDeleted: PropTypes.bool,
     }),
     onOpenDeleteDialog: PropTypes.func
 };
@@ -156,6 +156,7 @@ const MessageList = () => {
     const [messageToDelete, setMessageToDelete] = useState(null);
     const {selectedChatRoomId} = selectedChatRoomStore();
     const {userId} = userStore();
+    const {stompClient} = stompStore();
     const messagesEndRef = useRef(null);
     const [loading, setLoading] = useState(false);
     const handleOpenDeleteDialog = (message) => {
@@ -164,10 +165,12 @@ const MessageList = () => {
     };
 
     const handleConfirmDelete = async () => {
-        if (messageToDelete) {
-            deleteChat(selectedChatRoomId, messageToDelete.chatId).then(() => {
-                updateMessagesAfterDelete();
-            });
+        if (stompClient) {
+            await stompClient.publish({
+                destination: `/pub/chat-rooms.` + selectedChatRoomId + `.delete`,
+                body: JSON.stringify({"userId": userId, "chatId": messageToDelete.chatId}),
+            })
+            updateMessagesAfterDelete();
         }
         setOpenDeleteDialog(false);
     };
@@ -186,6 +189,7 @@ const MessageList = () => {
             message.chatId === messageToDelete.chatId ? {...message, deleted: true} : message
         );
         setMessages(updatedMessages);
+
     };
 
     const fetchInitialMessages = async () => {
